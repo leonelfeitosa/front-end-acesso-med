@@ -1,0 +1,36 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="header">
+                        <h4 class="title pull-left">Agentes</h4>
+                        <a [routerLink]="'adicionar/'">
+                        <button class="btn btn-success btn-fill pull-right">
+                            <span><i class="pe-7s-add-user"></i></span>
+                            <span>Cadastrar Agente</span></button>
+                        </a>
+                    </div>
+                    <div class="content table-responsive table-full-width">
+                        <table class="table table-hover table-stripped">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>CPF</th>
+                                    <th>Telefone</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let agente of agentes">
+                                    <td>{{agente.name}}</td>
+                                    <td>{{agente.cpf}}</td>
+                                    <td>{{agente.telefone}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

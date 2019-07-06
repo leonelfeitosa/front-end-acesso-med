@@ -1,0 +1,84 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Adicionar Agente</h4>
+          </div>
+          <div class="content">
+            <form>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Nome Completo</label>
+                    <input type="text" class="form-control" required placeholder="Nome Completo" 
+                    [(ngModel)]="agente.name" name="name">
+                  </div>
+                  
+                </div>
+              </div>
+              <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label>Email</label>
+                      <input type="email" class="form-control" required placeholder="Email" 
+                      [(ngModel)]="agente.email" name="email">
+                    </div>
+                    
+                  </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label>Endereco</label>
+                        <input type="text" class="form-control" required placeholder="Endereco" 
+                        [(ngModel)]="agente.endereco" name="endereco">
+                      </div>
+                      
+                    </div>
+                  </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" required class="form-control" placeholder="CPF" 
+                    [(ngModel)]="agente.cpf" name="cpf">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" required class="form-control" placeholder="Senha"
+                    [(ngModel)]="agente.password" name="password">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>RG</label>
+                    <input type="number" required class="form-control" placeholder="RG"
+                    [(ngModel)]="agente.rg" name="rg">
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Telefone</label>
+                    <input type="number" required class="form-control" placeholder="Telefone"
+                    [(ngModel)]="agente.telefone" name="telefone">
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button class="btn btn-success btn-fill pull-right" type="button" (click)="addAgente()">Cadastrar</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
