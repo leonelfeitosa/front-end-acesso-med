@@ -26,9 +26,6 @@ export class AuthComponent implements OnInit {
   }
 
   public checkToken() {
-     this.authService.checkToken().subscribe(() => {
-       this.router.navigateByUrl('admin/agentes');
-     });
   }
 
   public authenticate() {
@@ -48,6 +45,9 @@ export class AuthComponent implements OnInit {
         } else {
           this.authService.login(this.auth).subscribe((result) => {
               this.fireAuth.auth.signInWithCustomToken(result.token);
+              this.fireAuth.auth.currentUser.getIdTokenResult().then((tokenResult) => {
+                console.log(tokenResult.claims.isAdmin);
+              })
               this.fireAuth.auth.currentUser.getIdToken().then((token) => {
                 localStorage.setItem('token', token);
                 this.router.navigateByUrl('admin/agentes');

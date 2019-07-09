@@ -4,15 +4,17 @@ import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
 import { Routes, RouterModule } from '@angular/router';
 
+
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
+import { CheckTokenComponent } from './check-token/check-token.component';
 
 
-const routes: Routes =[
-  {
+const routes: Routes = [
+    {
     path: '',
-    redirectTo: 'auth/login',
-    pathMatch: 'full',
-  },{
+    component:  CheckTokenComponent
+  },
+  {
     path: 'auth/login',
     component: AuthComponent
   },

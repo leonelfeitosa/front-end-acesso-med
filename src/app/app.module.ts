@@ -17,6 +17,7 @@ import { AppComponent } from './app.component';
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
 import { AuthComponent } from './auth/auth.component';
 import { environment } from 'environments/environment.prod';
+import { CheckTokenComponent } from './check-token/check-token.component';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { environment } from 'environments/environment.prod';
   declarations: [
     AppComponent,
     AdminLayoutComponent,
-    AuthComponent
+    AuthComponent,
+    CheckTokenComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
