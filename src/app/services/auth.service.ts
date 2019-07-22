@@ -9,7 +9,7 @@ import { catchError } from 'rxjs/operators';
 })
 export class AuthService {
 
-  private authUrl = 'http://localhost:3000/users/login';
+  private authUrl = 'http://localhost:3000/auth/login';
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +25,6 @@ export class AuthService {
     const requestOptions = {
       headers: new HttpHeaders(headers),
     }
-    return this.http.get('http://localhost:3000/', requestOptions);
+    return this.http.get('http://localhost:3000/auth/check', requestOptions);
   }
 }

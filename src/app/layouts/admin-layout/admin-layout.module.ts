@@ -10,6 +10,7 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
 
 import { HomeComponent } from '../../home/home.component';
 import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agente.component';
+import { ClinicasComponent } from '../../clinicas/clinicas.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agent
   ],
   declarations: [
     HomeComponent,
-    CadastrarAgenteComponent
+    CadastrarAgenteComponent,
+    ClinicasComponent
   ]
 })
 

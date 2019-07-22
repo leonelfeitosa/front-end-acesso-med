@@ -1,6 +1,6 @@
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 import { RouterModule } from '@angular/router';
 import { HttpClientModule } from '@angular/common/http';
@@ -19,10 +19,12 @@ import { AuthComponent } from './auth/auth.component';
 import { environment } from 'environments/environment.prod';
 import { CheckTokenComponent } from './check-token/check-token.component';
 
+
 @NgModule({
   imports: [
     BrowserAnimationsModule,
     FormsModule,
+    ReactiveFormsModule,
     RouterModule,
     HttpModule,
     NavbarModule,
@@ -37,7 +39,7 @@ import { CheckTokenComponent } from './check-token/check-token.component';
     AppComponent,
     AdminLayoutComponent,
     AuthComponent,
-    CheckTokenComponent
+    CheckTokenComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

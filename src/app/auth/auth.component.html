@@ -7,13 +7,14 @@
                 <h4 class="title">Login</h4>
               </div>
               <div class="content">
-                <form>
+                <form (ngSubmit)="authenticate()" [formGroup]="authGroup">
                   <div class="row">
                     <div class="col-md-12">
-                      <div class="form-group">
-                        <label>CPF</label>
-                        <input type="text" required name="cpf" placeholder="CPF"
-                        [(ngModel)]="auth.username" class="form-control">
+                      <div class="form-group" #usernameField>
+                        <label>CPF/CNPJ</label>
+                        <input type="text" required name="cpf" placeholder="CPF/CNPJ"
+                         class="form-control" formControlName="username" >
+                         <p class="erro" *ngIf="authValidation.username">CPF/CNPJ incorreto</p>
                       </div>
                     </div>
                   </div>
@@ -22,13 +23,14 @@
                     <div class="form-group">
                       <label>Senha</label>
                       <input type="password" required name="password" placeholder="Senha"
-                      [(ngModel)]="auth.password" class="form-control">
+                      formControlName="password" class="form-control">
+                      <p class="erro" *ngIf="authValidation.password">Senha Incorreta</p>
                     </div>
                   </div>
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="button" class="btn btn-primary btn-fill pull-right" (click)="authenticate()">Entrar</button>
+                    <button type="submit" class="btn btn-primary btn-fill pull-right" [disabled]="!authGroup.valid">Entrar</button>
                   </div>
                 </div>
                 </form>

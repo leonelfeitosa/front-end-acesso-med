@@ -1,7 +1,8 @@
 import { AuthService } from './../services/auth.service';
-import { Component, OnInit, OnChanges } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, ElementRef } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/auth';
 import { Router } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 
 
 declare var $: any;
@@ -13,41 +14,47 @@ declare var $: any;
 })
 export class AuthComponent implements OnInit {
 
+  authGroup = new FormGroup({
+    username: new FormControl(''),
+    password: new FormControl('')
+  });
   auth: any =  {
     username: '',
     password: ''
+  };
+  authValidation = {
+    username: false,
+    password: false
   }
 
   constructor(private authService: AuthService,
               private fireAuth: AngularFireAuth,
-              private router: Router) {this.checkToken(); }
+              private router: Router) { }
 
   ngOnInit() {
+    this.authGroup.get('username').valueChanges.subscribe(() => {
+      this.authValidation.username = false;
+      this.authValidation.password = false;
+    })
   }
 
-  public checkToken() {
-  }
+
 
   public authenticate() {
-    if (this.auth.username === '' ||
-        this.auth.password === '') {
-          $.notify({
-            icon: '',
-            message: 'Preencha todos os campos corretamente'
-          }, {
-            type: 'danger',
-            timer: '1000',
-            placement: {
-              from: 'top',
-              align: 'center'
-            }
-          });
+    console.log(this.authGroup.value.username)
+    if (this.authGroup.value.username === '' ||
+        this.authGroup.value.password === '') {
+         console.log('erro');
         } else {
-          this.authService.login(this.auth).subscribe((result) => {
-              this.fireAuth.auth.signInWithCustomToken(result.token);
+          this.auth = {
+            username: this.authGroup.value.username,
+            password: this.authGroup.value.password
+          };
+          this.authService.login(this.auth).subscribe(async (result) => {
+              await this.fireAuth.auth.signInWithCustomToken(result.token);
               this.fireAuth.auth.currentUser.getIdTokenResult().then((tokenResult) => {
-                console.log(tokenResult.claims.isAdmin);
-              })
+                console.log(tokenResult.claims.type);
+              });
               this.fireAuth.auth.currentUser.getIdToken().then((token) => {
                 localStorage.setItem('token', token);
                 this.router.navigateByUrl('admin/agentes');
@@ -56,36 +63,13 @@ export class AuthComponent implements OnInit {
             const erro = error.error;
             console.log(erro);
             if (typeof erro.message !==  'undefined') {
-
-              if (erro.message === 'Username incorreto') {
-                $.notify({
-                  icon: '',
-                  message: 'CPF incorreto'
-                }, {
-                  type: 'danger',
-                  timer: '1000',
-                  placement: {
-                    from: 'top',
-                    align: 'center'
-                  }
-                });
+              this.authValidation.username = true;
               }
               if (erro.message === 'Senha incorreta') {
-                console.log('entrou')
-                $.notify({
-                  icon: '',
-                  message: 'Senha incorreta'
-                }, {
-                  type: 'danger',
-                  timer: '1000',
-                  placement: {
-                    from: 'top',
-                    align: 'center'
-                  }
-                });
+                this.authValidation.password = true;
               }
             }
-          })
+          )
         }
   }
 
