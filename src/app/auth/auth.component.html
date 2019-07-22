@@ -10,11 +10,12 @@
                 <form (ngSubmit)="authenticate()" [formGroup]="authGroup">
                   <div class="row">
                     <div class="col-md-12">
-                      <div class="form-group" #usernameField>
+                      <div class="form-group">
                         <label>CPF/CNPJ</label>
                         <input type="text" required name="cpf" placeholder="CPF/CNPJ"
                          class="form-control" formControlName="username" >
                          <p class="erro" *ngIf="authValidation.username">CPF/CNPJ incorreto</p>
+                         <p class="erro" *ngIf="authExists.username">Preencha este campo!</p>
                       </div>
                     </div>
                   </div>
@@ -25,6 +26,7 @@
                       <input type="password" required name="password" placeholder="Senha"
                       formControlName="password" class="form-control">
                       <p class="erro" *ngIf="authValidation.password">Senha Incorreta</p>
+                      <p class="erro" *ngIf="authExists.username">Preencha este campo!</p>
                     </div>
                   </div>
                 </div>

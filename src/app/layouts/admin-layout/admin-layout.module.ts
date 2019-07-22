@@ -11,6 +11,7 @@ import { AdminLayoutRoutes } from './admin-layout.routing';
 import { HomeComponent } from '../../home/home.component';
 import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agente.component';
 import { ClinicasComponent } from '../../clinicas/clinicas.component';
+import { CadastrarClinicaComponent } from '../../cadastrar-clinica/cadastrar-clinica.component';
 
 
 @NgModule({
@@ -18,13 +19,15 @@ import { ClinicasComponent } from '../../clinicas/clinicas.component';
     CommonModule,
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
+    ReactiveFormsModule,
     LbdModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
   ],
   declarations: [
     HomeComponent,
     CadastrarAgenteComponent,
-    ClinicasComponent
+    ClinicasComponent,
+    CadastrarClinicaComponent,
   ]
 })
 

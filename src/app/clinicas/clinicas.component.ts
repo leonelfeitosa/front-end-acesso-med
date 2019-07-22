@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ClinicasService } from '../services/clinicas.service';
 
 @Component({
   selector: 'app-clinicas',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClinicasComponent implements OnInit {
 
-  constructor() { }
+  clinicas: any = [];
+
+  constructor(private clinicasService: ClinicasService) { }
 
   ngOnInit() {
+    this.clinicasService.getClinicas().subscribe((clinicas) => {
+      this.clinicas = clinicas;
+    });
   }
 
 }

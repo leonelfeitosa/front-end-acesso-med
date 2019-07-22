@@ -25,7 +25,12 @@ export class AuthComponent implements OnInit {
   authValidation = {
     username: false,
     password: false
-  }
+  };
+  authExists = {
+    username: false,
+    password: false
+  };
+  
 
   constructor(private authService: AuthService,
               private fireAuth: AngularFireAuth,
@@ -35,6 +40,8 @@ export class AuthComponent implements OnInit {
     this.authGroup.get('username').valueChanges.subscribe(() => {
       this.authValidation.username = false;
       this.authValidation.password = false;
+      this.authExists.username = false;
+      this.authExists.password = false;
     })
   }
 
@@ -42,9 +49,10 @@ export class AuthComponent implements OnInit {
 
   public authenticate() {
     console.log(this.authGroup.value.username)
-    if (this.authGroup.value.username === '' ||
-        this.authGroup.value.password === '') {
-         console.log('erro');
+    if (this.authGroup.value.username === '') {
+          this.authExists.username = true;
+        } else if(this.authGroup.value.password === ''){
+          this.authExists.password = true;
         } else {
           this.auth = {
             username: this.authGroup.value.username,

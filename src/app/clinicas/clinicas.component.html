@@ -1,3 +1,39 @@
-<p>
-  clinicas works!
-</p>
+<div class="main-content">
+  <div class="container-fluid">
+    
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title pull-left">Clínicas</h4>
+            <a [routerLink]="'adicionar/'">
+              <button class="btn btn-success btn-fill pull-right">
+                <span><i class="pe-7s-add-user"></i></span>
+                <span>Cadastrar Clínica</span>
+              </button>
+            </a>
+          </div>
+          <div class="content table-responsive table-full-width">
+            <table class="table table-hover table-stripped">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Endereço</th>
+                  <th>CNPJ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let clinica of clinicas">
+                  <td>{{clinica.name}}</td>
+                  <td>{{clinica.endereco}}</td>
+                  <td>{{clinica.cnpj}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </div>
+</div>
