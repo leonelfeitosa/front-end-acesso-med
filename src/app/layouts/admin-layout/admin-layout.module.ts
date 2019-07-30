@@ -12,6 +12,7 @@ import { HomeComponent } from '../../home/home.component';
 import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agente.component';
 import { ClinicasComponent } from '../../clinicas/clinicas.component';
 import { CadastrarClinicaComponent } from '../../cadastrar-clinica/cadastrar-clinica.component';
+import { FotoPerfilComponent } from '../../foto-perfil/foto-perfil.component';
 
 
 @NgModule({
@@ -28,6 +29,7 @@ import { CadastrarClinicaComponent } from '../../cadastrar-clinica/cadastrar-cli
     CadastrarAgenteComponent,
     ClinicasComponent,
     CadastrarClinicaComponent,
+    FotoPerfilComponent
   ]
 })
 

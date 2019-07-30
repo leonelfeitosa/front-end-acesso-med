@@ -11,26 +11,31 @@ export class AgenteService {
 
   constructor(private http: HttpClient,
     ) { }
+    private getToken() {
+      const token =  localStorage.getItem('token');
+      const headers = {
+        'Token': token
+      };
+      const requestOptions = {
+        headers: new HttpHeaders(headers)
+      }
+      return requestOptions;
+    }
 
   public getAgentes(): Observable<any[]> {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Token': token
-    };
-    const requestOptions = {
-      headers: new HttpHeaders(headers),
-    }
-    return this.http.get<any[]>(this.agentesUrl, requestOptions);
+
+    return this.http.get<any[]>(this.agentesUrl, this.getToken());
   }
 
+  public getAgente(agenteId: any): Observable<any> {
+    return this.http.get<any>(`${this.agentesUrl}/${agenteId}`, this.getToken());
+  }
+
+
   public addAgente(agente: any): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = {
-      'Token': token
-    };
-    const requestOptions = {
-      headers: new HttpHeaders(headers),
-    }
-    return this.http.post<any>(this.agentesUrl, agente, requestOptions);
+    return this.http.post<any>(this.agentesUrl, agente, this.getToken());
+  }
+  public updateAgente(agenteID: any, agente: any): Observable<any> {
+    return this.http.put<any>(`${this.agentesUrl}/${agenteID}`, agente, this.getToken());
   }
 }

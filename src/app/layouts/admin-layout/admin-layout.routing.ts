@@ -9,6 +9,7 @@ import { CadastrarClinicaComponent } from '../../cadastrar-clinica/cadastrar-cli
 export const AdminLayoutRoutes: Routes = [
     { path: 'admin/agentes',      component: HomeComponent },
     { path: 'admin/agentes/adicionar', component: CadastrarAgenteComponent},
+    { path: 'admin/agentes/editar/:id', component: CadastrarAgenteComponent, data: {edit: true}},
     { path: 'admin/clinicas', component: ClinicasComponent},
     { path: 'admin/clinicas/adicionar', component: CadastrarClinicaComponent}
     

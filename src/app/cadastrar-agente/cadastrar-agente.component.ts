@@ -1,6 +1,10 @@
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormControl, FormGroup } from '@angular/forms';
 import { AgenteService } from './../services/agente.service';
-import { Component, OnInit } from '@angular/core';
+import { confirmarSenha } from '../shared/confirmar-senha.directive';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { FotoPerfilComponent } from 'app/foto-perfil/foto-perfil.component';
+import { AngularFireStorage } from '@angular/fire/storage';
 
 declare var $: any;
 
@@ -11,27 +15,60 @@ declare var $: any;
 })
 export class CadastrarAgenteComponent implements OnInit {
 
-  public agente: any = {
-    name: '',
-    cpf: '',
-    password: '',
-    rg: '',
-    telefone: '',
-    email: '',
-    endereco: ''
-  };
+  @ViewChild('fotoPerfil') fotoPerfil: FotoPerfilComponent;
+  agenteID: any;
+  agenteActive: boolean;
+  edit = false;
+  editedFoto = false;
+  currentAgente: any;
 
-  constructor(private agenteService: AgenteService, private router: Router) { }
+  agenteGroup = new FormGroup({
+    name: new FormControl(''),
+    cpf: new FormControl(''),
+    password: new FormControl(''),
+    confirmPassword: new FormControl(''),
+    rg: new FormControl(''),
+    telefone: new FormControl(''),
+    email: new FormControl(''),
+    endereco: new FormControl('')
+  }, {validators: confirmarSenha});
+
+  submitted = false;
+
+  constructor(private agenteService: AgenteService, 
+              private router: Router, 
+              private storage:AngularFireStorage,
+              private route:ActivatedRoute) { }
 
   ngOnInit() {
+    this.route.data.subscribe((data) => {
+      if (data.hasOwnProperty('edit') && data.edit){
+        this.route.params.subscribe((params) => {
+          this.agenteID = params['id'];
+          this.edit = true;
+          console.log(this.agenteID);
+          this.agenteService.getAgente(this.agenteID).subscribe((agente) => {
+            this.agenteGroup.get('name').setValue(agente.name);
+            this.agenteGroup.get('cpf').setValue(agente.cpf);
+            this.agenteGroup.get('rg').setValue(agente.rg);
+            this.agenteGroup.get('telefone').setValue(agente.telefone);
+            this.agenteGroup.get('email').setValue(agente.email);
+            this.agenteGroup.get('endereco').setValue(agente.endereco);
+            this.agenteActive = agente.isActive;
+            if(agente.foto_perfil !== ''){
+            this.storage.storage.refFromURL(agente.foto_perfil).getDownloadURL().then((url) => {
+              this.fotoPerfil.image.nativeElement.src = url;
+            });
+          }
+            this.currentAgente = agente;
+          });
+        });
+      }
+    });
   }
 
-  public addAgente() {
-    if (this.agente.name === '' ||
-        this.agente.cpf === '' ||
-        this.agente.password === '' ||
-        this.agente.rg === '' ||
-        this.agente.telefone === '') {
+  public async addAgente() {
+    if (!this.agenteGroup.valid) {
           $.notify({
             icon: '',
             message: 'Preencha todos os campos corretamente!!'
@@ -44,21 +81,117 @@ export class CadastrarAgenteComponent implements OnInit {
             }
           });
         } else {
-          this.agenteService.addAgente(this.agente).subscribe((retorno) => {
-            $.notify({
-              icon: '',
-              message: 'Cadastrado com sucesso'
-            }, {
-              type: 'success',
-              timer: '1000',
-              placement: {
-                from: 'top',
-                align: 'center'
-              }
+          let newAgente: any = {
+            name: this.agenteGroup.value.name,
+            cpf: this.agenteGroup.value.cpf,
+            email: this.agenteGroup.value.email,
+            endereco: this.agenteGroup.value.endereco,
+            rg: this.agenteGroup.value.rg,
+            telefone: this.agenteGroup.value.telefone,
+            password: this.agenteGroup.value.password
+          }
+          if (this.editedFoto){
+            const foto: File = this.fotoPerfil.getFile();
+            const fotoId = Math.random().toString(36).substring(2);
+            let fotoRefUrl = '';
+            let fotoRef: any;
+            if(this.edit){
+              fotoRefUrl = this.currentAgente.foto_perfil;
+              fotoRef = this.storage.storage.refFromURL(fotoRefUrl);
+              await fotoRef.delete();
+            }
+            fotoRefUrl = 'fotos_perfil/'+fotoId+'.png';
+            fotoRef = this.storage.storage.ref(fotoRefUrl);
+            
+            await fotoRef.put(foto).then(async (snapshot) => {
+              newAgente.foto_perfil = await snapshot.ref.getDownloadURL();
+            })
+          }else{
+            newAgente.foto_perfil = '';
+          }
+          if (this.edit){
+            if(!this.editedFoto){
+            newAgente.foto_perfil = this.currentAgente.foto_perfil;
+            }
+            this.agenteService.updateAgente(this.agenteID, newAgente).subscribe(() => {
+              $.notify({
+                icon: '',
+                message: 'Agente alterado'
+              }, {
+                type: 'info',
+                timer: '1000',
+                placement: {
+                  from: 'top',
+                  align: 'center'
+                }
+              });
             });
             this.router.navigateByUrl('/admin/agentes');
-          })
+          }else{
+            console.log(newAgente);
+            this.agenteService.addAgente(newAgente).subscribe(() => {
+              $.notify({
+                icon: '',
+                message: 'Agente criado'
+              }, {
+                type: 'info',
+                timer: '1000',
+                placement: {
+                  from: 'top',
+                  align: 'center'
+                }
+              });
+            }); 
+            this.router.navigateByUrl('/admin/agentes');
+          }
         }
+        }
+  public desativarAgente() {
+    const agente = {
+      isActive: false
+    };
+    this.agenteService.updateAgente(this.agenteID, agente).subscribe(() => {
+      $.notify({
+        icon: '',
+        message: 'Agente desativado'
+      }, {
+        type: 'info',
+        timer: '1000',
+        placement: {
+          from: 'top',
+          align: 'center'
+        }
+      });
+      this.router.navigateByUrl('/admin/agentes');
+    });
   }
 
-}
+  public reativarAgente(){
+    const agente = {
+      isActive: true
+    };
+    this.agenteService.updateAgente(this.agenteID, agente).subscribe(() => {
+      $.notify({
+        icon: '',
+        message: 'Agente reativado'
+      }, {
+        type: 'info',
+        timer: '1000',
+        placement: {
+          from: 'top',
+          align: 'center'
+        }
+      });
+      this.router.navigateByUrl('/admin/agentes');
+    });
+  }
+
+  public fotoEditada(){
+    console.log('Foto Selecionada');
+    this.editedFoto = true;
+  }
+
+  }
+
+  
+

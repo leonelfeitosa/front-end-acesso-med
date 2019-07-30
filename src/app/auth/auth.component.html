@@ -32,7 +32,9 @@
                 </div>
                 <div class="row">
                   <div class="col-md-12">
-                    <button type="submit" class="btn btn-primary btn-fill pull-right" [disabled]="!authGroup.valid">Entrar</button>
+                    <div class="pull-right">
+                    <button type="submit" class="btn btn-primary btn-fill" [disabled]="!authGroup.valid || submitting">Entrar</button>
+                  </div>
                   </div>
                 </div>
                 </form>

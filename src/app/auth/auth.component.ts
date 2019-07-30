@@ -30,6 +30,7 @@ export class AuthComponent implements OnInit {
     username: false,
     password: false
   };
+  submitting: boolean = false;
   
 
   constructor(private authService: AuthService,
@@ -48,21 +49,18 @@ export class AuthComponent implements OnInit {
 
 
   public authenticate() {
-    console.log(this.authGroup.value.username)
     if (this.authGroup.value.username === '') {
           this.authExists.username = true;
         } else if(this.authGroup.value.password === ''){
           this.authExists.password = true;
         } else {
+          this.submitting = true;
           this.auth = {
             username: this.authGroup.value.username,
             password: this.authGroup.value.password
           };
           this.authService.login(this.auth).subscribe(async (result) => {
               await this.fireAuth.auth.signInWithCustomToken(result.token);
-              this.fireAuth.auth.currentUser.getIdTokenResult().then((tokenResult) => {
-                console.log(tokenResult.claims.type);
-              });
               this.fireAuth.auth.currentUser.getIdToken().then((token) => {
                 localStorage.setItem('token', token);
                 this.router.navigateByUrl('admin/agentes');

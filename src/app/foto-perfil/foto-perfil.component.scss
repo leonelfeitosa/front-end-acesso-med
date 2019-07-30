@@ -1,0 +1,15 @@
+.foto-perfil{
+    background-color: black;
+    border-radius: 5px;
+}
+.foto-perfil > a >img{
+    height: 200px;
+    width: auto;
+}
+.foto-perfil > a > img:hover{
+    opacity: 0.5;
+}
+
+.card .content {
+    padding: 0 !important;
+}
