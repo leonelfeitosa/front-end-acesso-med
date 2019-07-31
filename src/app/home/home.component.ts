@@ -11,6 +11,7 @@ export class HomeComponent implements OnInit {
   agentes: any[] = [];
   filtros: any[] = [];
   filtroPesquisa: string;
+  loaded: boolean = false;
    
   constructor(private agenteService: AgenteService) { }
 
@@ -18,6 +19,7 @@ export class HomeComponent implements OnInit {
     this.agenteService.getAgentes().subscribe((agentes) => {
       this.agentes = agentes;
       this.filtros = this.agentes;
+      this.loaded = true;
     });
     }
     
@@ -50,7 +52,7 @@ export class HomeComponent implements OnInit {
   filtrarPesquisa(){
     let filtro = this.filtroPesquisa;
     if(this.filtroPesquisa.length>0){
-    this.filtros = this.filtros.filter((agente) => {
+    this.filtros = this.agentes.filter((agente) => {
       if(agente.name.toLowerCase().startsWith(filtro.toLowerCase())){
         return agente;
       }

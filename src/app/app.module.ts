@@ -19,6 +19,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { AuthComponent } from './auth/auth.component';
 import { environment } from 'environments/environment.prod';
 import { CheckTokenComponent } from './check-token/check-token.component';
+import { LoadingComponent } from './loading/loading.component';
 
 
 
@@ -45,6 +46,7 @@ import { CheckTokenComponent } from './check-token/check-token.component';
     AdminLayoutComponent,
     AuthComponent,
     CheckTokenComponent,
+    LoadingComponent,
   ],
   providers: [],
   bootstrap: [AppComponent]

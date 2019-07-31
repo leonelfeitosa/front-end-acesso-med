@@ -25,6 +25,6 @@ export class AuthService {
     const requestOptions = {
       headers: new HttpHeaders(headers),
     }
-    return this.http.get('http://localhost:3000/auth/check', requestOptions);
+    return this.http.get('http://localhost:3000/auth/get', requestOptions);
   }
 }

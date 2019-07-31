@@ -1,13 +1,16 @@
-.center {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    overflow: auto;
+.login {
+    width: 350px;
+    margin: 100px auto;
 }
 
 .erro {
     color: red;
     font-size: 12px;
+    padding: 1%;
+}
+
+.form-submit {
+    display: inline;
     padding: 1%;
 }
 

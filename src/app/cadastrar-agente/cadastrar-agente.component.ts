@@ -46,7 +46,6 @@ export class CadastrarAgenteComponent implements OnInit {
         this.route.params.subscribe((params) => {
           this.agenteID = params['id'];
           this.edit = true;
-          console.log(this.agenteID);
           this.agenteService.getAgente(this.agenteID).subscribe((agente) => {
             this.agenteGroup.get('name').setValue(agente.name);
             this.agenteGroup.get('cpf').setValue(agente.cpf);

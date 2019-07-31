@@ -1,7 +1,7 @@
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
-      <div class="col-md-5 col-md-offset-4 center">
+      <div class="login">
           <div class="card">
               <div class="header">
                 <h4 class="title">Login</h4>
@@ -31,9 +31,12 @@
                   </div>
                 </div>
                 <div class="row">
+            
                   <div class="col-md-12">
-                    <div class="pull-right">
-                    <button type="submit" class="btn btn-primary btn-fill" [disabled]="!authGroup.valid || submitting">Entrar</button>
+                    <div class="form-submit">
+                    
+                    <button type="submit" class="btn btn-primary btn-fill pull-right" [disabled]="!authGroup.valid || submitting">Entrar</button>
+                    <app-loading style="margin-right: 2%;" class="pull-right" *ngIf="submitting"></app-loading>
                   </div>
                   </div>
                 </div>

@@ -29,7 +29,7 @@ import { FotoPerfilComponent } from '../../foto-perfil/foto-perfil.component';
     CadastrarAgenteComponent,
     ClinicasComponent,
     CadastrarClinicaComponent,
-    FotoPerfilComponent
+    FotoPerfilComponent,
   ]
 })
 

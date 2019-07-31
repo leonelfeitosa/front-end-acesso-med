@@ -25,7 +25,15 @@ export class ClinicasService {
     return this.http.get<any[]>(this.clinicasUrl, this.getToken());
   }
 
+  public getClinica(id: any): Observable<any> {
+    return this.http.get<any>(`${this.clinicasUrl}/${id}`, this.getToken());
+  }
+
   public addClinica(clinica: any): Observable<any> {
     return this.http.post<any>(this.clinicasUrl, clinica, this.getToken());
+  }
+
+  public updateClinica(clinicaId: any, clinica: any): Observable<any> {
+    return this.http.put<any>(`${this.clinicasUrl}/${clinicaId}`, clinica, this.getToken());
   }
 }
