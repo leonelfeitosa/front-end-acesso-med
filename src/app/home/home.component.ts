@@ -12,14 +12,16 @@ export class HomeComponent implements OnInit {
   filtros: any[] = [];
   filtroPesquisa: string;
   loaded: boolean = false;
+  loading: boolean = true;
    
   constructor(private agenteService: AgenteService) { }
 
   ngOnInit() {
     this.agenteService.getAgentes().subscribe((agentes) => {
-      this.agentes = agentes;
-      this.filtros = this.agentes;
+      this.agentes = [...agentes];
+      this.filtros = agentes;
       this.loaded = true;
+      this.loading = false;
     });
     }
     

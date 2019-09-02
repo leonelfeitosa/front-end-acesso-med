@@ -99,6 +99,9 @@
                     <div class="col-md-4 pull-right">
                       <button class="btn btn-success btn-fill" (click)="abrirModal(clinica)"><i class="pe-7s-note2"></i>Cadastrar Procedimento</button>
                     </div>
+                    <div class="align-self-center collapse in" *ngIf="clinica.procedimentos.length == 0">
+                      Não há procedimentos cadastrados
+                    </div>
                   </div>
                     <div
                       class="collapse in"

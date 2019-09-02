@@ -33,7 +33,7 @@ export class ClinicasComponent implements OnInit {
 
   getClinicas() {
     this.clinicasService.getClinicas().subscribe((clinicas) => {
-      this.clinicas = clinicas;
+      this.clinicas = [...clinicas];
       for (let i = 0; i < this.clinicas.length; i++) {
         this.clinicas[i].collapsed = false;
       }
@@ -43,7 +43,8 @@ export class ClinicasComponent implements OnInit {
 
   async filtro(filtro){
     if (filtro === 'todos'){
-      await this.limparFiltros();
+      this.limparFiltros();
+      
       this.filtros = this.clinicas;
       this.filtroName = 'Todos'
       return
