@@ -12,6 +12,7 @@ import { AppRoutingModule } from './app.routing';
 import { NavbarModule } from './shared/navbar/navbar.module';
 import { FooterModule } from './shared/footer/footer.module';
 import { SidebarModule } from './sidebar/sidebar.module';
+import { AuthGuardService } from './guards/auth-guard.service';
 
 import { AppComponent } from './app.component';
 
@@ -39,7 +40,7 @@ import { LoadingComponent } from './loading/loading.component';
     HttpClientModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
-    AngularFireStorageModule
+    AngularFireStorageModule,
   ],
   declarations: [
     AppComponent,
@@ -48,7 +49,7 @@ import { LoadingComponent } from './loading/loading.component';
     CheckTokenComponent,
     LoadingComponent,
   ],
-  providers: [],
+  providers: [AuthGuardService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -7,6 +7,7 @@ import { LbdModule } from '../../lbd/lbd.module';
 import { NguiMapModule} from '@ngui/map';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
+import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
 
 import { HomeComponent } from '../../home/home.component';
 import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agente.component';
@@ -22,7 +23,8 @@ import { FotoPerfilComponent } from '../../foto-perfil/foto-perfil.component';
     FormsModule,
     ReactiveFormsModule,
     LbdModule,
-    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'})
+    NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
+    SweetAlert2Module.forRoot()
   ],
   declarations: [
     HomeComponent,

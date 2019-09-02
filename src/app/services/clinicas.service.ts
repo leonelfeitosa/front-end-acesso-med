@@ -36,4 +36,8 @@ export class ClinicasService {
   public updateClinica(clinicaId: any, clinica: any): Observable<any> {
     return this.http.put<any>(`${this.clinicasUrl}/${clinicaId}`, clinica, this.getToken());
   }
+
+  public addProcedimento(clinicaId: any, procedimento: any): Observable<any> {
+    return this.http.post<any>(`${this.clinicasUrl}/${clinicaId}/procedimentos`, procedimento, this.getToken());
+  }
 }

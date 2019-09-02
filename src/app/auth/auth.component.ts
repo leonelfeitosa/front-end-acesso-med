@@ -66,14 +66,19 @@ export class AuthComponent implements OnInit {
                 this.router.navigateByUrl('admin/agentes');
               });
           }, (error) => {
+            this.submitting = false;
             const erro = error.error;
             console.log(erro);
             if (typeof erro.message !==  'undefined') {
-              this.authValidation.username = true;
+              if (erro.message === 'Username incorreto') {
+                this.authValidation.username = true;
               }
+              
               if (erro.message === 'Senha incorreta') {
                 this.authValidation.password = true;
               }
+              }
+              
             }
           )
         }

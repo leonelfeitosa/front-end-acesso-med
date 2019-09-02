@@ -1,3 +1,35 @@
+<swal
+  #procedimentosSwal
+  title="Cadastrar Procedimento"
+  [confirmButtonClass]="'btn btn-fill btn-success'"
+  (confirm)="cadastrarProcedimento()"
+  [options]="{showLoaderOnConfirm: true}"
+
+>
+<form *swalPartial="swalTargets.content" [formGroup]="procedimentoGroup">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-group">
+        <label>Nome do Procedimento</label>
+        <input type="text" required name="nomeProcedimento" placeholder="Nome do Procedimento" 
+        class="form-control" formControlName="nome">
+      </div>
+    </div>
+  </div>
+  <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Valor do Procedimento</label>
+          <input type="number" required name="valorProcedimento" placeholder="Valor do Procedimento" 
+          class="form-control" formControlName="valor">
+        </div>
+      </div>
+    </div>
+</form>
+<ng-container  *swalPartial="swalTargets.confirmButton">
+  Cadastrar
+</ng-container>
+</swal>
 <div class="main-content">
   <div class="container-fluid">
     
@@ -46,7 +78,12 @@
                 </tr>
               </thead>
               <tbody>
-                <tr *ngFor="let clinica of filtros">
+                <ng-container
+                  *ngFor="let clinica of filtros; let i = index"
+                  [attr.data.index]="i"
+                  data-toggle="collapse"
+                >
+                <tr (click)="collapse(i)" class="accordion-toggle">
                   <td>{{clinica.name}}</td>
                   <td>{{clinica.endereco}}</td>
                   <td>{{clinica.cnpj}}</td>
@@ -56,6 +93,23 @@
                     </a>
                   </td>
                 </tr>
+                <tr *ngIf="clinica.collapsed">
+                  <td colspan="4">
+                    <div class="row">
+                    <div class="col-md-4 pull-right">
+                      <button class="btn btn-success btn-fill" (click)="abrirModal(clinica)"><i class="pe-7s-note2"></i>Cadastrar Procedimento</button>
+                    </div>
+                  </div>
+                    <div
+                      class="collapse in"
+                      *ngFor="let procedimento of clinica.procedimentos"
+                      style="padding-left: 2%"
+                    >
+                    - {{procedimento.nome}} - R$ {{procedimento.valor}}
+                    </div>
+                  </td>
+                </tr>
+              </ng-container>
               </tbody>
             </table>
           </div>
