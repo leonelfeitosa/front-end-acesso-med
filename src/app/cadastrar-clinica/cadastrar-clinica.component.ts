@@ -4,18 +4,12 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { confirmarSenha } from '../shared/confirmar-senha.directive';
 import { ClinicasService } from '../services/clinicas.service';
 import { LocalService } from '../services/local.service';
-
+import { Estado } from '../models/estado';
+import { Cidade } from '../models/cidade';
 declare var $: any;
 
-class Estado {
-  id: number;
-  nome: string;
-  sigla: string;
-}
 
-class Cidade {
-  nome: string;
-}
+
 
 @Component({
   selector: 'app-cadastrar-clinica',
@@ -80,6 +74,7 @@ export class CadastrarClinicaComponent implements OnInit {
   }
 
   public getEstados(): void {
+    this.clearArray(this.estados);
     this.localService.getEstados().subscribe((estados) => {
       estados.forEach(element => {
         const estado = new Estado()
@@ -94,6 +89,7 @@ export class CadastrarClinicaComponent implements OnInit {
   public estadoSelecionado(estado: Estado) {
     this.estadoName = estado.nome;
     this.clinicaGroup.get('estado').setValue(estado.sigla);
+    this.clearArray(this.cidades);
     this.localService.getCidades(estado.id).subscribe((cidades) => {
       cidades.forEach(element => {
         const cidade = new Cidade();
@@ -107,6 +103,12 @@ export class CadastrarClinicaComponent implements OnInit {
   public cidadeSelecionada(cidadeNome: string) {
     this.clinicaGroup.get('cidade').setValue(cidadeNome);
     this.cidadeName = cidadeNome;
+  }
+
+  clearArray(values: Array<any>) {
+    while (values.length) {
+      values.pop();
+    }
   }
 
   findEstado(sigla: string) {

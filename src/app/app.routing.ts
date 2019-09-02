@@ -13,7 +13,8 @@ import { CheckTokenComponent } from './check-token/check-token.component';
 const routes: Routes = [
     {
     path: '',
-    component:  CheckTokenComponent
+    redirectTo: 'admin/agentes',
+    pathMatch: 'full'
   },
   {
     path: 'auth/login',

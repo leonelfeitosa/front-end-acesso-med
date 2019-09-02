@@ -5,6 +5,9 @@ import { confirmarSenha } from '../shared/confirmar-senha.directive';
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FotoPerfilComponent } from 'app/foto-perfil/foto-perfil.component';
 import { AngularFireStorage } from '@angular/fire/storage';
+import { LocalService } from '../services/local.service';
+import { Estado } from '../models/estado';
+import { Cidade } from '../models/cidade';
 
 declare var $: any;
 
@@ -22,6 +25,12 @@ export class CadastrarAgenteComponent implements OnInit {
   editedFoto = false;
   currentAgente: any;
 
+  estadoName: string = '';
+  cidadeName: string = '';
+
+  estados: Array<Estado> = [];
+  cidades: Array<Cidade> = [];
+
   agenteGroup = new FormGroup({
     name: new FormControl(''),
     cpf: new FormControl(''),
@@ -30,7 +39,9 @@ export class CadastrarAgenteComponent implements OnInit {
     rg: new FormControl(''),
     telefone: new FormControl(''),
     email: new FormControl(''),
-    endereco: new FormControl('')
+    endereco: new FormControl(''),
+    estado: new FormControl(''),
+    cidade: new FormControl('')
   }, {validators: confirmarSenha});
 
   submitted = false;
@@ -38,31 +49,40 @@ export class CadastrarAgenteComponent implements OnInit {
   constructor(private agenteService: AgenteService, 
               private router: Router, 
               private storage:AngularFireStorage,
-              private route:ActivatedRoute) { }
+              private route:ActivatedRoute,
+              private localService:LocalService) { }
 
   ngOnInit() {
+    this.getEstados();
     this.route.data.subscribe((data) => {
       if (data.hasOwnProperty('edit') && data.edit){
-        this.route.params.subscribe((params) => {
-          this.agenteID = params['id'];
-          this.edit = true;
-          this.agenteService.getAgente(this.agenteID).subscribe((agente) => {
-            this.agenteGroup.get('name').setValue(agente.name);
-            this.agenteGroup.get('cpf').setValue(agente.cpf);
-            this.agenteGroup.get('rg').setValue(agente.rg);
-            this.agenteGroup.get('telefone').setValue(agente.telefone);
-            this.agenteGroup.get('email').setValue(agente.email);
-            this.agenteGroup.get('endereco').setValue(agente.endereco);
-            this.agenteActive = agente.isActive;
-            if(agente.foto_perfil !== ''){
-            this.storage.storage.refFromURL(agente.foto_perfil).getDownloadURL().then((url) => {
-              this.fotoPerfil.image.nativeElement.src = url;
-            });
-          }
-            this.currentAgente = agente;
-          });
+        this.getAgente();
+      }
+    });
+  }
+
+  public getAgente() {
+    this.route.params.subscribe((params) => {
+      this.agenteID = params['id'];
+      this.edit = true;
+      this.agenteService.getAgente(this.agenteID).subscribe((agente) => {
+        this.agenteGroup.get('name').setValue(agente.name);
+        this.agenteGroup.get('cpf').setValue(agente.cpf);
+        this.agenteGroup.get('rg').setValue(agente.rg);
+        this.agenteGroup.get('telefone').setValue(agente.telefone);
+        this.agenteGroup.get('email').setValue(agente.email);
+        this.agenteGroup.get('endereco').setValue(agente.endereco);
+        const estado = this.findEstado(agente.estado);
+        this.estadoSelecionado(estado);
+        this.cidadeSelecionada(agente.cidade);
+        this.agenteActive = agente.isActive;
+        if(agente.foto_perfil !== ''){
+        this.storage.storage.refFromURL(agente.foto_perfil).getDownloadURL().then((url) => {
+          this.fotoPerfil.image.nativeElement.src = url;
         });
       }
+        this.currentAgente = agente;
+      });
     });
   }
 
@@ -85,6 +105,8 @@ export class CadastrarAgenteComponent implements OnInit {
             cpf: this.agenteGroup.value.cpf,
             email: this.agenteGroup.value.email,
             endereco: this.agenteGroup.value.endereco,
+            estado: this.agenteGroup.value.estado,
+            cidade: this.agenteGroup.value.cidade,
             rg: this.agenteGroup.value.rg,
             telefone: this.agenteGroup.value.telefone,
             password: this.agenteGroup.value.password
@@ -185,11 +207,56 @@ export class CadastrarAgenteComponent implements OnInit {
     });
   }
 
+
   public fotoEditada(){
     console.log('Foto Selecionada');
     this.editedFoto = true;
   }
 
+  clearArray(values: Array<any>) {
+    while (values.length) {
+      values.pop();
+    }
+  }
+
+  public getEstados(): void {
+    this.clearArray(this.estados);
+    this.localService.getEstados().subscribe((estados) => {
+      estados.forEach(element => {
+        const estado = new Estado()
+        estado.id = element.id;
+        estado.nome = element.nome;
+        estado.sigla = element.sigla;
+        this.estados.push(estado);
+      });
+    });
+  }
+  public estadoSelecionado(estado: Estado) {
+    this.estadoName = estado.nome;
+    this.agenteGroup.get('estado').setValue(estado.sigla);
+    this.clearArray(this.cidades);
+    this.localService.getCidades(estado.id).subscribe((cidades) => {
+      cidades.forEach(element => {
+        const cidade = new Cidade();
+        cidade.nome = element.nome;
+        this.cidades.push(cidade);
+      });
+    });
+    this.cidadeName = 'Selecione uma Cidade';
+  }
+  public cidadeSelecionada(cidadeNome: string) {
+    this.agenteGroup.get('cidade').setValue(cidadeNome);
+    this.cidadeName = cidadeNome;
+  }
+
+  findEstado(sigla: string) {
+    return this.estados.find((estado) => {
+      if (sigla.toLowerCase() === estado.sigla.toLowerCase()){
+        return true
+      }
+      return false
+    });
+  }
   }
 
   
