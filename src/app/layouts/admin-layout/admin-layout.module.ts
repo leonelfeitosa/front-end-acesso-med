@@ -8,6 +8,7 @@ import { NguiMapModule} from '@ngui/map';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
+import { NgxSpinnerModule } from 'ngx-spinner';
 
 import { HomeComponent } from '../../home/home.component';
 import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agente.component';
@@ -15,7 +16,6 @@ import { ClinicasComponent } from '../../clinicas/clinicas.component';
 import { CadastrarClinicaComponent } from '../../cadastrar-clinica/cadastrar-clinica.component';
 import { FotoPerfilComponent } from '../../foto-perfil/foto-perfil.component';
 import { ClientesComponent } from '../../clientes/clientes.component';
-
 
 @NgModule({
   imports: [
@@ -25,7 +25,8 @@ import { ClientesComponent } from '../../clientes/clientes.component';
     ReactiveFormsModule,
     LbdModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
-    SweetAlert2Module.forRoot()
+    SweetAlert2Module.forRoot(),
+    NgxSpinnerModule,
   ],
   declarations: [
     HomeComponent,

@@ -1,8 +1,8 @@
 <ng-container *ngIf="loading">
-<div class="loading-overlay"></div>
-<div class="loading-overlay-image-container">
-    <img src="assets/loading.gif" class="loading-overlay-img"/>
-</div>
+    <div class="loading-overlay"></div>
+    <div class="loading-overlay-image-container">
+        <img src="assets/loading.gif" class="loading-overlay-img" />
+    </div>
 </ng-container>
 <div class="main-content">
     <div class="container-fluid">
@@ -12,35 +12,40 @@
                     <div class="header">
                         <h4 class="title pull-left">Agentes</h4>
                         <a [routerLink]="'adicionar/'">
-                        <button class="btn btn-success btn-fill pull-right">
-                            <span><i class="pe-7s-add-user"></i></span>
-                            <span>Cadastrar Agente</span></button>
+                            <button class="btn btn-success btn-fill pull-right">
+                                <span><i class="pe-7s-add-user"></i></span>
+                                <span>Cadastrar Agente</span></button>
                         </a>
                     </div>
                     <div class="content table-responsive table-full-width">
-                        
-                        <div class="row">
+                        <ngx-spinner bdColor="rgba(0,0,0,0.0)" size="medium" color="#3498db" type="ball-clip-rotate">
+                        </ngx-spinner>
+                        <div class="row" *ngIf="loaded">
                             <div class="col-md-12">
                                 <div style="margin-left: 2%;">
                                     <div class="dropdown">
-                                            <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                                                <p>{{filtroName}}
-                                                    <b class="caret"></b>
-                                                </p>
-                                            </a>
-                                            <ul class="dropdown-menu">
-                                                <li><a href='#' onclick="return false;" (click)="filtro('todos')">Todos</a></li>
-                                                <li><a href='#' onclick="return false;" (click)="filtro('ativos')">Ativos</a></li>
-                                                <li><a href='#' onclick="return false;" (click)="filtro('inativos')">Inativos</a></li>
-                                            </ul>
-                                        </div>
-                                        
+                                        <a href="" class="dropdown-toggle" data-toggle="dropdown">
+                                            <p>{{filtroName}}
+                                                <b class="caret"></b>
+                                            </p>
+                                        </a>
+                                        <ul class="dropdown-menu">
+                                            <li><a href='#' onclick="return false;" (click)="filtro('todos')">Todos</a>
+                                            </li>
+                                            <li><a href='#' onclick="return false;"
+                                                    (click)="filtro('ativos')">Ativos</a></li>
+                                            <li><a href='#' onclick="return false;"
+                                                    (click)="filtro('inativos')">Inativos</a></li>
+                                        </ul>
+                                    </div>
+
                                 </div>
-                                
+
                             </div>
                             <div class="col-md-4" style="margin-left: 2%;">
-                                    <input class="form-control" placeholder="Pesquisar" [(ngModel)]="filtroPesquisa" (keyup)="filtrarPesquisa()">
-                                </div>
+                                <input class="form-control" placeholder="Pesquisar" [(ngModel)]="filtroPesquisa"
+                                    (keyup)="filtrarPesquisa()">
+                            </div>
                         </div>
                         <table class="table table-hover table-stripped">
                             <thead>
@@ -57,11 +62,12 @@
                                     <td>{{agente.cpf}}</td>
                                     <td>{{agente.telefone}}</td>
                                     <td><a [routerLink]="['editar/', agente.id]">
-                                    <button class="btn btn-primary btn-fill"><i class="pe-7s-pen"></i></button></a></td>
+                                            <button class="btn btn-primary btn-fill"><i
+                                                    class="pe-7s-pen"></i></button></a></td>
                                 </tr>
                             </tbody>
                         </table>
-                
+
                     </div>
                 </div>
             </div>

@@ -1,5 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { AgenteService } from '../services/agente.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-home',
@@ -14,13 +15,16 @@ export class HomeComponent implements OnInit {
   loaded: boolean = false;
   loading: boolean = true;
    
-  constructor(private agenteService: AgenteService) { }
+  constructor(private agenteService: AgenteService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
+    this.spinner.show();
     this.agenteService.getAgentes().subscribe((agentes) => {
       this.agentes = [...agentes];
       this.filtros = agentes;
       this.loaded = true;
+      this.spinner.hide();
       this.loading = false;
     });
     }

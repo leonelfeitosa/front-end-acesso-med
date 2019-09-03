@@ -1,38 +1,32 @@
-<swal
-  #procedimentosSwal
-  title="Cadastrar Procedimento"
-  [confirmButtonClass]="'btn btn-fill btn-success'"
-  (confirm)="cadastrarProcedimento()"
-  [options]="{showLoaderOnConfirm: true}"
-
->
-<form *swalPartial="swalTargets.content" [formGroup]="procedimentoGroup">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="form-group">
-        <label>Nome do Procedimento</label>
-        <input type="text" required name="nomeProcedimento" placeholder="Nome do Procedimento" 
-        class="form-control" formControlName="nome">
-      </div>
-    </div>
-  </div>
-  <div class="row">
+<swal #procedimentosSwal title="Cadastrar Procedimento" [confirmButtonClass]="'btn btn-fill btn-success'"
+  (confirm)="cadastrarProcedimento()" [options]="{showLoaderOnConfirm: true}">
+  <form *swalPartial="swalTargets.content" [formGroup]="procedimentoGroup">
+    <div class="row">
       <div class="col-md-12">
         <div class="form-group">
-          <label>Valor do Procedimento</label>
-          <input type="number" required name="valorProcedimento" placeholder="Valor do Procedimento" 
-          class="form-control" formControlName="valor">
+          <label>Nome do Procedimento</label>
+          <input type="text" required name="nomeProcedimento" placeholder="Nome do Procedimento" class="form-control"
+            formControlName="nome">
         </div>
       </div>
     </div>
-</form>
-<ng-container  *swalPartial="swalTargets.confirmButton">
-  Cadastrar
-</ng-container>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Valor do Procedimento</label>
+          <input type="number" required name="valorProcedimento" placeholder="Valor do Procedimento"
+            class="form-control" formControlName="valor">
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-container *swalPartial="swalTargets.confirmButton">
+    Cadastrar
+  </ng-container>
 </swal>
 <div class="main-content">
   <div class="container-fluid">
-    
+
     <div class="row">
       <div class="col-md-12">
         <div class="card">
@@ -45,30 +39,47 @@
               </button>
             </a>
           </div>
-          <div class="content table-responsive table-full-width">
-              <div class="row">
-                  <div class="col-md-12">
-                      <div style="margin-left: 2%;">
-                          <div class="dropdown">
-                                  <a href="" class="dropdown-toggle" data-toggle="dropdown">
-                                      <p>{{filtroName}}
-                                          <b class="caret"></b>
-                                      </p>
-                                  </a>
-                                  <ul class="dropdown-menu">
-                                      <li><a href='#' onclick="return false;" (click)="filtro('todos')">Todos</a></li>
-                                      <li><a href='#' onclick="return false;" (click)="filtro('ativos')">Ativos</a></li>
-                                      <li><a href='#' onclick="return false;" (click)="filtro('inativos')">Inativos</a></li>
-                                  </ul>
-                              </div>
-                              
-                      </div>
-                      <div class="col-md-4" style="margin-left: 2%;">
-                        <input class="form-control" placeholder="Pesquisar" [(ngModel)]="filtroPesquisa" (keyup)="filtrarPesquisa()">
-                    </div>
+          <div class="content table-responsive ">
+            <ngx-spinner bdColor="rgba(0,0,0,0.0)" size="medium" color="#3498db" type="ball-clip-rotate"></ngx-spinner>
+            <div class="row" *ngIf="loaded">
+              <div class="col-md-12">
+
+                <form class="form-inline">
+                  <div class="form-group">
+                    <label for="situacao">Situação: </label>
+                    <select name="situacao" id="" class="form-control" ngModel (ngModelChange)="filtro($event)">
+                      <option value="todos" [selected]="true">Todos</option>
+                      <option value="ativos">Ativos</option>
+                      <option value="inativos">Inativos</option>
+                    </select>
                   </div>
+
+                  <div class="form-group">
+                    <label for="estado">Estado: </label>
+                    <select name="estado" id="" class="form-control" ngModel (ngModelChange)="estadoSelecionado($event)">
+                      <option value="" disabled selected>Selecione um estado</option>
+                      <option [ngValue]="{nome: 'todos'}">Todos</option>
+                      <option *ngFor="let estado of estados"
+                              [ngValue]="estado">
+                            {{estado.sigla + '-' + estado.nome}}</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                      <label for="estado">Estado: </label>
+                      <select name="estado" id="" class="form-control" ngModel (ngModelChange)="cidadeSelecionada($event)">
+                        <option value="" disabled selected>{{cidadeOpcao}}</option>
+                        <option *ngFor="let cidade of cidades"
+                                [ngValue]="cidade">
+                              {{cidade.nome}}</option>
+                      </select>
+                    </div>
                   
+                  <input name="pesquisar" class="form-control" placeholder="Pesquisar" [(ngModel)]="filtroPesquisa"
+                    (keyup)="filtrarPesquisa()">
+                </form>
               </div>
+            </div>
             <table class="table table-hover table-stripped">
               <thead>
                 <tr>
@@ -78,47 +89,42 @@
                 </tr>
               </thead>
               <tbody>
-                <ng-container
-                  *ngFor="let clinica of filtros; let i = index"
-                  [attr.data.index]="i"
-                  data-toggle="collapse"
-                >
-                <tr (click)="collapse(i)" class="accordion-toggle">
-                  <td>{{clinica.name}}</td>
-                  <td>{{clinica.endereco}}</td>
-                  <td>{{clinica.cnpj}}</td>
-                  <td>
-                    <a [routerLink]="['editar/', clinica.id]">
-                      <button class="btn btn-primary btn-fill"><i class="pe-7s-pen"></i></button>
-                    </a>
-                  </td>
-                </tr>
-                <tr *ngIf="clinica.collapsed">
-                  <td colspan="4">
-                    <div class="row">
-                    <div class="col-md-4 pull-right">
-                      <button class="btn btn-success btn-fill" (click)="abrirModal(clinica)"><i class="pe-7s-note2"></i>Cadastrar Procedimento</button>
-                    </div>
-                    <div class="align-self-center collapse in" *ngIf="clinica.procedimentos.length == 0">
-                      Não há procedimentos cadastrados
-                    </div>
-                  </div>
-                    <div
-                      class="collapse in"
-                      *ngFor="let procedimento of clinica.procedimentos"
-                      style="padding-left: 2%"
-                    >
-                    - {{procedimento.nome}} - R$ {{procedimento.valor}}
-                    </div>
-                  </td>
-                </tr>
-              </ng-container>
+                <ng-container *ngFor="let clinica of filtros; let i = index" [attr.data.index]="i"
+                  data-toggle="collapse">
+                  <tr (click)="collapse(i)" class="accordion-toggle">
+                    <td>{{clinica.name}}</td>
+                    <td>{{clinica.endereco}}</td>
+                    <td>{{clinica.cnpj}}</td>
+                    <td>
+                      <a [routerLink]="['editar/', clinica.id]">
+                        <button class="btn btn-primary btn-fill"><i class="pe-7s-pen"></i></button>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr *ngIf="clinica.collapsed">
+                    <td colspan="4">
+                      <div class="row">
+                        <div class="col-md-4 pull-right">
+                          <button class="btn btn-success btn-fill" (click)="abrirModal(clinica)"><i
+                              class="pe-7s-note2"></i>Cadastrar Procedimento</button>
+                        </div>
+                        <div class="align-self-center collapse in" *ngIf="clinica.procedimentos.length == 0">
+                          Não há procedimentos cadastrados
+                        </div>
+                      </div>
+                      <div class="collapse in" *ngFor="let procedimento of clinica.procedimentos"
+                        style="padding-left: 2%">
+                        - {{procedimento.nome}} - R$ {{procedimento.valor}}
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
               </tbody>
             </table>
           </div>
         </div>
       </div>
     </div>
-    
+
   </div>
 </div>

@@ -6,6 +6,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { FotoPerfilComponent } from 'app/foto-perfil/foto-perfil.component';
 import { AngularFireStorage } from '@angular/fire/storage';
 import { LocalService } from '../services/local.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 import { Estado } from '../models/estado';
 import { Cidade } from '../models/cidade';
 
@@ -31,6 +32,8 @@ export class CadastrarAgenteComponent implements OnInit {
   estados: Array<Estado> = [];
   cidades: Array<Cidade> = [];
 
+  
+
   agenteGroup = new FormGroup({
     name: new FormControl(''),
     cpf: new FormControl(''),
@@ -50,12 +53,14 @@ export class CadastrarAgenteComponent implements OnInit {
               private router: Router, 
               private storage:AngularFireStorage,
               private route:ActivatedRoute,
-              private localService:LocalService) { }
+              private localService:LocalService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.getEstados();
     this.route.data.subscribe((data) => {
       if (data.hasOwnProperty('edit') && data.edit){
+        this.spinner.show();
         this.getAgente();
       }
     });
@@ -82,6 +87,7 @@ export class CadastrarAgenteComponent implements OnInit {
         });
       }
         this.currentAgente = agente;
+        this.spinner.hide();
       });
     });
   }

@@ -11,9 +11,10 @@
                   <div class="row">
                     <div class="col-md-12">
                       <div class="form-group">
-                        <label>CPF/CNPJ</label>
+                        <label for="cpf">CPF/CNPJ</label>
                         <input type="text" required name="cpf" placeholder="CPF/CNPJ"
-                         class="form-control" formControlName="username" >
+                         class="form-control" formControlName="username"
+                         >
                          <p class="erro" *ngIf="authValidation.username">CPF/CNPJ incorreto</p>
                          <p class="erro" *ngIf="authExists.username">Preencha este campo!</p>
                       </div>
@@ -22,7 +23,7 @@
                   <div class="row">
                   <div class="col-md-12">
                     <div class="form-group">
-                      <label>Senha</label>
+                      <label for="password">Senha</label>
                       <input type="password" required name="password" placeholder="Senha"
                       formControlName="password" class="form-control">
                       <p class="erro" *ngIf="authValidation.password">Senha Incorreta</p>

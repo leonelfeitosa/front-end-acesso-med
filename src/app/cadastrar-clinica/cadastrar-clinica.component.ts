@@ -6,6 +6,7 @@ import { ClinicasService } from '../services/clinicas.service';
 import { LocalService } from '../services/local.service';
 import { Estado } from '../models/estado';
 import { Cidade } from '../models/cidade';
+import { NgxSpinnerService } from 'ngx-spinner';
 declare var $: any;
 
 
@@ -42,16 +43,17 @@ export class CadastrarClinicaComponent implements OnInit {
   constructor(private clinicasService: ClinicasService,
               private router: Router,
               private route: ActivatedRoute,
-              private localService: LocalService) { }
+              private localService: LocalService,
+              private spinner: NgxSpinnerService) { }
 
   ngOnInit() {
     this.getEstados();
     this.route.data.subscribe((dataSnapshot) => {
       if(dataSnapshot.hasOwnProperty('edit') && dataSnapshot.edit){
+        this.spinner.show();
         this.getClinica();
       }
     });
-    console.log(this.estados);
   }
 
 
@@ -60,7 +62,6 @@ export class CadastrarClinicaComponent implements OnInit {
       this.clinicaId = paramsSnapshot['id'];
       this.edit = true;
       this.clinicasService.getClinica(this.clinicaId).subscribe((clinica) => {
-        console.log(clinica)
         this.clinicaGroup.get('name').setValue(clinica.name);
         this.clinicaGroup.get('cnpj').setValue(clinica.cnpj);
         this.clinicaGroup.get('endereco').setValue(clinica.endereco);
@@ -69,6 +70,7 @@ export class CadastrarClinicaComponent implements OnInit {
         const estado = this.findEstado(clinica.estado);
         this.estadoSelecionado(estado);
         this.cidadeSelecionada(clinica.cidade);
+        this.spinner.hide();
       });
     });
   }
