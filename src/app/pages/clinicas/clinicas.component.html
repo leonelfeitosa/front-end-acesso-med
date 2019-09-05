@@ -1,0 +1,195 @@
+<swal
+  #procedimentosSwal
+  title="Cadastrar Procedimento"
+  [confirmButtonClass]="'btn btn-fill btn-success'"
+  (confirm)="cadastrarProcedimento()"
+  [options]="{ showLoaderOnConfirm: true }"
+>
+  <form *swalPartial="swalTargets.content" [formGroup]="procedimentoGroup">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Nome do Procedimento</label>
+          <input
+            type="text"
+            required
+            name="nomeProcedimento"
+            placeholder="Nome do Procedimento"
+            class="form-control"
+            formControlName="nome"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Valor do Procedimento</label>
+          <input
+            type="number"
+            required
+            name="valorProcedimento"
+            placeholder="Valor do Procedimento"
+            class="form-control"
+            formControlName="valor"
+          />
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-container *swalPartial="swalTargets.confirmButton">
+    Cadastrar
+  </ng-container>
+</swal>
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title pull-left">Clínicas</h4>
+            <a [routerLink]="'adicionar/'">
+              <button class="btn btn-success btn-fill pull-right">
+                <span><i class="pe-7s-add-user"></i></span>
+                <span>Cadastrar Clínica</span>
+              </button>
+            </a>
+          </div>
+          <div class="content table-responsive ">
+            <ngx-spinner
+              bdColor="rgba(0,0,0,0.0)"
+              size="medium"
+              color="#3498db"
+              type="ball-clip-rotate"
+            ></ngx-spinner>
+            <div class="row" *ngIf="loaded">
+              <div class="col-md-12 filtros">
+                <form class="form-inline" [formGroup]="filtroGroup">
+                  <div class="form-group">
+                    <label for="situacao">Situação: </label>
+                    <select
+                      name="situacao"
+                      id="situacao"
+                      class="form-control"
+                      formControlName="situacao"
+                    >
+                      <option value="todos" [selected]="true">Todos</option>
+                      <option value="ativos">Ativos</option>
+                      <option value="inativos">Inativos</option>
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="estado">Estado: </label>
+                    <select
+                      name="estado"
+                      id="estado"
+                      class="form-control"
+                      formControlName="estado"
+                    >
+                      <option value="selecione" disabled selected
+                        >Selecione um estado</option
+                      >
+                      <option [ngValue]="{ nome: 'todos' }">Todos</option>
+                      <option *ngFor="let estado of estados" [ngValue]="estado">
+                        {{ estado.sigla + "-" + estado.nome }}</option
+                      >
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="cidade">Cidade: </label>
+                    <select
+                      name="cidade"
+                      id="cidade"
+                      class="form-control"
+                      formControlName="cidade"
+                    >
+                      <option value="selecione" disabled selected>{{
+                        cidadeOpcao
+                      }}</option>
+                      <option *ngFor="let cidade of cidades" [ngValue]="cidade">
+                        {{ cidade.nome }}</option
+                      >
+                    </select>
+                  </div>
+
+                  <div class="form-group">
+                    <label for="pesquisa">Nome:</label>
+                    <input
+                    name="pesquisa"
+                    id="pesquisa"
+                    class="form-control"
+                    placeholder="Pesquisar"
+                    formControlName="pesquisa"
+                  />
+                  </div>
+                </form>
+              </div>
+            </div>
+            <table class="table table-hover table-stripped">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>Endereço</th>
+                  <th>CNPJ</th>
+                </tr>
+              </thead>
+              <tbody>
+                <ng-container
+                  *ngFor="let clinica of filtros; let i = index"
+                  [attr.data.index]="i"
+                  data-toggle="collapse"
+                >
+                  <tr (click)="collapse(i)" class="accordion-toggle">
+                    <td>{{ clinica.name }}</td>
+                    <td>{{ clinica.endereco }}</td>
+                    <td>{{ clinica.cnpj }}</td>
+                    <td>
+                      <a [routerLink]="['editar/', clinica.id]">
+                        <button
+                          class="btn btn-primary btn-fill"
+                          name="editar"
+                          aria-label="editar"
+                        >
+                          <i class="pe-7s-pen"></i>
+                        </button>
+                      </a>
+                    </td>
+                  </tr>
+                  <tr *ngIf="clinica.collapsed">
+                    <td colspan="4">
+                      <div class="row">
+                        <div class="col-md-4 pull-right">
+                          <button
+                            class="btn btn-success btn-fill"
+                            (click)="abrirModal(clinica)"
+                          >
+                            <i class="pe-7s-note2"></i>Cadastrar Procedimento
+                          </button>
+                        </div>
+                        <div
+                          class="align-self-center collapse in"
+                          *ngIf="clinica.procedimentos.length == 0"
+                        >
+                          Não há procedimentos cadastrados
+                        </div>
+                      </div>
+                      <div
+                        class="collapse in"
+                        *ngFor="let procedimento of clinica.procedimentos"
+                        style="padding-left: 2%"
+                      >
+                        - {{ procedimento.nome }} - R$ {{ procedimento.valor }}
+                      </div>
+                    </td>
+                  </tr>
+                </ng-container>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

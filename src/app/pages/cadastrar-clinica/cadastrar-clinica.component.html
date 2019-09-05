@@ -1,0 +1,159 @@
+<div class="main-content">
+  <ngx-spinner
+    bdColor="rgba(0,0,0,0.5)"
+    size="medium"
+    color="#3498db"
+    type="ball-clip-rotate"
+  ></ngx-spinner>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Adicionar Clinica</h4>
+          </div>
+          <div class="content">
+            <form [formGroup]="clinicaGroup" (ngSubmit)="addClinica()">
+              <!-- Nome da clinica -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>Nome da Clínica</label>
+                    <input
+                      type="text"
+                      required
+                      name="nome"
+                      placeholder="Nome da Clínica"
+                      class="form-control"
+                      formControlName="name"
+                    />
+                  </div>
+                </div>
+              </div>
+              <!-- CNPJ -->
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label>CPF/CNPJ</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="CNPJ"
+                      formControlName="cnpj"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label>Endereço</label>
+                    <input
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Endereço"
+                      formControlName="endereco"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select
+                      name="estado"
+                      id="estado"
+                      formControlName="estado"
+                      class="form-control"
+                    >
+                      <option value="selecione" disabled selected
+                        >Selecione um estado</option
+                      >
+                      <option *ngFor="let estado of estados" [ngValue]="estado">
+                        {{ estado.sigla + "-" + estado.nome }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cidade">Cidade</label>
+                    <select
+                      name="cidade"
+                      id="cidade"
+                      class="form-control"
+                      formControlName="cidade"
+                    >
+                      <option value="selecione" disabled selected>{{
+                        cidadeOpcao
+                      }}</option>
+                      <option *ngFor="let cidade of cidades" [ngValue]="cidade">
+                        {{ cidade.nome }}</option
+                      >
+                    </select>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Senhas -->
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Senha</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      required
+                      placeholder="Senha"
+                      formControlName="password"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label>Confirmar Senha</label>
+                    <input
+                      type="password"
+                      class="form-control"
+                      required
+                      placeholder="Confirmar Senha"
+                      formControlName="confirmPassword"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    class="btn btn-danger btn-fill pull-left"
+                    type="button"
+                    *ngIf="edit && clinicaActive"
+                    (click)="desativarClinica()"
+                  >
+                    Desativar Clinica
+                  </button>
+                  <button
+                    class="btn btn-info btn-fill pull-left"
+                    type="button"
+                    *ngIf="edit && !clinicaActive"
+                    (click)="desativarClinica()"
+                  >
+                    Reativar Clinica
+                  </button>
+                  <button
+                    class="btn btn-success btn-fill pull-right"
+                    type="submit"
+                    [disabled]="!clinicaGroup.valid || submitted"
+                  >
+                    Cadastrar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -175,7 +175,7 @@ body,
 }
 
 a {
-  color: #1DC7EA;
+  color: #1d76ea;
 }
 a:hover, a:focus {
   color: #42d0ed;
@@ -1152,7 +1152,7 @@ input:focus {
   border-bottom-width: 1px;
   font-size: 12px;
   text-transform: uppercase;
-  color: #9A9A9A;
+  color: #000;
   font-weight: 400;
   padding-bottom: 5px;
 }

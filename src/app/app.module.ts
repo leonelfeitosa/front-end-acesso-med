@@ -13,14 +13,14 @@ import { NavbarModule } from './shared/navbar/navbar.module';
 import { FooterModule } from './shared/footer/footer.module';
 import { SidebarModule } from './sidebar/sidebar.module';
 import { AuthGuardService } from './guards/auth-guard.service';
+import { SharedModuleModule } from './shared/shared-module/shared-module.module';
 
 import { AppComponent } from './app.component';
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { AuthComponent } from './auth/auth.component';
+import { AuthComponent } from './pages/auth/auth.component';
 import { environment } from 'environments/environment.prod';
-import { CheckTokenComponent } from './check-token/check-token.component';
-import { LoadingComponent } from './loading/loading.component';
+
 
 
 
@@ -41,13 +41,12 @@ import { LoadingComponent } from './loading/loading.component';
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFireStorageModule,
+    SharedModuleModule
   ],
   declarations: [
     AppComponent,
     AdminLayoutComponent,
     AuthComponent,
-    CheckTokenComponent,
-    LoadingComponent,
   ],
   providers: [AuthGuardService],
   bootstrap: [AppComponent]

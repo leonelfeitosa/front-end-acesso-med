@@ -1,0 +1,25 @@
+ul {
+    list-style-type: none;
+}
+
+@media (min-width: 768px){
+    .form-inline .form-group {
+        margin-right: 20px;
+    }
+}
+
+.card label {
+    margin-right: 5px;
+}
+
+.card .category, .card label {
+    color: black;
+}
+
+.table > thead > tr > th {
+	color: black
+}
+
+.filtros {
+	margin: 2% auto;
+}

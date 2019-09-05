@@ -1,0 +1,16 @@
+.card label {
+    margin-right: 5px;
+}
+
+.filtros {
+	margin: 2% auto;
+}
+
+@media (min-width: 768px){
+    .form-inline .form-group {
+        margin-right: 20px;
+    }
+}
+.table > thead > tr > th {
+	color: black
+}

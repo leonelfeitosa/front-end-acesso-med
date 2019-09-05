@@ -1,0 +1,218 @@
+<div class="main-content">
+  <ngx-spinner
+    bdColor="rgba(0,0,0,0.5)"
+    size="medium"
+    color="#3498db"
+    type="ball-clip-rotate"
+  ></ngx-spinner>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">
+              {{ edit ? "Editar agente" : "Cadastrar Agente" }}
+            </h4>
+          </div>
+          <div class="content">
+            <form (ngSubmit)="addAgente()" [formGroup]="agenteGroup">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="name">Nome Completo</label>
+                    <input
+                      id="name"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Nome Completo"
+                      formControlName="name"
+                      name="name"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="email">Email</label>
+                    <input
+                      id="email"
+                      type="email"
+                      class="form-control"
+                      required
+                      placeholder="Email"
+                      formControlName="email"
+                      name="email"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="endereco">Endereco</label>
+                    <input
+                      id="endereco"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Endereco"
+                      formControlName="endereco"
+                      name="endereco"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="estado">Estado</label>
+                    <select
+                      name="estado"
+                      id="estado"
+                      formControlName="estado"
+                      class="form-control"
+                    >
+                      <option value="selecione" disabled selected
+                        >Selecione um estado</option
+                      >
+                      <option *ngFor="let estado of estados" [ngValue]="estado">
+                        {{ estado.sigla + "-" + estado.nome }}
+                      </option>
+                    </select>
+                  </div>
+                </div>
+                <div class="col-md-4">
+                  <div class="form-group">
+                    <label for="cidadeCadastro">Cidade</label>
+                    <select
+                      name="cidade"
+                      id="cidadeCadastro"
+                      class="form-control"
+                      formControlName="cidade"
+                    >
+                      <option value="selecione" disabled selected>{{
+                        cidadeOpcao
+                      }}</option>
+                      <option *ngFor="let cidade of cidades" [ngValue]="cidade">
+                        {{ cidade.nome }}</option
+                      >
+                    </select>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="cpf">CPF</label>
+                    <input
+                      id="cpf"
+                      type="text"
+                      required
+                      class="form-control"
+                      placeholder="CPF"
+                      formControlName="cpf"
+                      name="cpf"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="password">Senha</label>
+                    <input
+                      id="password"
+                      type="password"
+                      required
+                      class="form-control"
+                      placeholder="Senha"
+                      formControlName="password"
+                      name="password"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="confirmPassword">Confirmar Senha</label>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      required
+                      class="form-control"
+                      placeholder="Confirmar Senha"
+                      formControlName="confirmPassword"
+                      name="confirmPassword"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="rg">RG</label>
+                    <input
+                      id="rg"
+                      type="text"
+                      required
+                      class="form-control"
+                      placeholder="RG"
+                      formControlName="rg"
+                      name="rg"
+                    />
+                  </div>
+                </div>
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label for="telefone">Telefone</label>
+                    <input
+                      id="telefone"
+                      type="tel"
+                      required
+                      class="form-control"
+                      placeholder="Telefone"
+                      formControlName="telefone"
+                      name="telefone"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <button
+                    class="btn btn-danger btn-fill pull-left"
+                    type="button"
+                    (click)="desativarAgente()"
+                    *ngIf="edit && agenteActive"
+                  >
+                    Desativar Agente
+                  </button>
+                  <button
+                    class="btn btn-primary btn-fill pull-left"
+                    type="button"
+                    (click)="reativarAgente()"
+                    *ngIf="edit && !agenteActive"
+                  >
+                    Reativar Agente
+                  </button>
+                  <button
+                    class="btn btn-success btn-fill pull-right"
+                    type="submit"
+                    [disabled]="!agenteGroup.valid || submitted"
+                  >
+                    Cadastrar
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <app-foto-perfil
+          #fotoPerfil
+          (fotoEdited)="fotoEditada()"
+        ></app-foto-perfil>
+      </div>
+    </div>
+  </div>
+</div>

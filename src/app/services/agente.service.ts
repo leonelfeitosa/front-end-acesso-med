@@ -22,9 +22,9 @@ export class AgenteService {
       return requestOptions;
     }
 
-  public getAgentes(): Observable<any[]> {
+  public getAgentes(): Observable<any> {
 
-    return this.http.get<any[]>(this.agentesUrl, this.getToken());
+    return this.http.get<any>(this.agentesUrl, this.getToken());
   }
 
   public getAgente(agenteId: any): Observable<any> {

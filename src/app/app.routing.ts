@@ -1,13 +1,12 @@
-import { AuthComponent } from './auth/auth.component';
+import { AuthComponent } from './pages/auth/auth.component';
 import { NgModule } from '@angular/core';
 import { CommonModule, } from '@angular/common';
 import { BrowserModule  } from '@angular/platform-browser';
-import { Routes, RouterModule } from '@angular/router';
+import { Routes, RouterModule, PreloadAllModules } from '@angular/router';
 import { AuthGuardService } from './guards/auth-guard.service';
 
 
 import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.component';
-import { CheckTokenComponent } from './check-token/check-token.component';
 
 
 const routes: Routes = [
@@ -28,7 +27,7 @@ const routes: Routes = [
         {
       path: 'admin',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-  }]},
+  }],},
   {
     path: '**',
     redirectTo: 'admin/agentes'
@@ -39,7 +38,7 @@ const routes: Routes = [
   imports: [
     CommonModule,
     BrowserModule,
-    RouterModule.forRoot(routes)
+    RouterModule.forRoot(routes, {preloadingStrategy: PreloadAllModules})
   ],
   exports: [
   ],

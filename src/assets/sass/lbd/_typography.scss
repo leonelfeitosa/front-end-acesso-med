@@ -19,6 +19,7 @@ button.close{
     -webkit-font-smoothing: antialiased;
     font-family: "Roboto","Helvetica Neue",Arial,sans-serif;
     font-weight: $font-weight-normal;
+    font-display: swap;
 }
 
 h1, .h1, h2, .h2, h3, .h3, h4, .h4{
@@ -55,7 +56,7 @@ p{
 }
 
 h1 small, h2 small, h3 small, h4 small, h5 small, h6 small, .h1 small, .h2 small, .h3 small, .h4 small, .h5 small, .h6 small, h1 .small, h2 .small, h3 .small, h4 .small, h5 .small, h6 .small, .h1 .small, .h2 .small, .h3 .small, .h4 .small, .h5 .small, .h6 .small {
-    color: $dark-gray;
+    color: #000;
     font-weight: $font-weight-light;
     line-height: $line-height-general;
 }

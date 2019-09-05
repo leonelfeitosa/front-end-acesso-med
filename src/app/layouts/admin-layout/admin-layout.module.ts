@@ -3,19 +3,19 @@ import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-import { LbdModule } from '../../lbd/lbd.module';
 import { NguiMapModule} from '@ngui/map';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
 import { SweetAlert2Module } from '@sweetalert2/ngx-sweetalert2';
-import { NgxSpinnerModule } from 'ngx-spinner';
+import { SharedModuleModule } from '../../shared/shared-module/shared-module.module';
 
-import { HomeComponent } from '../../home/home.component';
-import { CadastrarAgenteComponent } from '../../cadastrar-agente/cadastrar-agente.component';
-import { ClinicasComponent } from '../../clinicas/clinicas.component';
-import { CadastrarClinicaComponent } from '../../cadastrar-clinica/cadastrar-clinica.component';
-import { FotoPerfilComponent } from '../../foto-perfil/foto-perfil.component';
-import { ClientesComponent } from '../../clientes/clientes.component';
+
+import { AgentesComponent } from '../../pages/agentes/agentes.component';
+import { CadastrarAgenteComponent } from '../../pages/cadastrar-agente/cadastrar-agente.component';
+import { ClinicasComponent } from '../../pages/clinicas/clinicas.component';
+import { CadastrarClinicaComponent } from '../../pages/cadastrar-clinica/cadastrar-clinica.component';
+import { FotoPerfilComponent } from '../../components/foto-perfil/foto-perfil.component';
+import { ClientesComponent } from '../../pages/clientes/clientes.component';
 
 @NgModule({
   imports: [
@@ -23,13 +23,12 @@ import { ClientesComponent } from '../../clientes/clientes.component';
     RouterModule.forChild(AdminLayoutRoutes),
     FormsModule,
     ReactiveFormsModule,
-    LbdModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
     SweetAlert2Module.forRoot(),
-    NgxSpinnerModule,
+    SharedModuleModule
   ],
   declarations: [
-    HomeComponent,
+    AgentesComponent,
     CadastrarAgenteComponent,
     ClinicasComponent,
     CadastrarClinicaComponent,

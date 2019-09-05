@@ -9,7 +9,7 @@
         font-weight: normal;
         
         a:not(.btn){
-            color: $dark-gray;
+            color: #000;
             display: block;
             margin-bottom: 3px;
             &:hover,
@@ -25,7 +25,7 @@
         }
     }
     .social-area > a:not(.btn){
-       color: $dark-gray;
+       color: #000;
        display: inline-block;
        vertical-align: top;
        padding: $padding-social-a;

@@ -1,0 +1,50 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="login">
+          <div class="card">
+              <div class="header">
+                <h4 class="title">Login</h4>
+              </div>
+              <div class="content">
+                <form (ngSubmit)="authenticate()" [formGroup]="authGroup">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label for="cpf">CPF/CNPJ</label>
+                        <input type="text" id="cpf" required name="cpf" placeholder="CPF/CNPJ"
+                         class="form-control" formControlName="username"
+                         >
+                         <p class="erro" *ngIf="authValidation.username">CPF/CNPJ incorreto</p>
+                         <p class="erro" *ngIf="authExists.username">Preencha este campo!</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="row">
+                  <div class="col-md-12">
+                    <div class="form-group">
+                      <label for="password">Senha</label>
+                      <input type="password" id="password" required name="password" placeholder="Senha"
+                      formControlName="password" class="form-control">
+                      <p class="erro" *ngIf="authValidation.password">Senha Incorreta</p>
+                      <p class="erro" *ngIf="authExists.username">Preencha este campo!</p>
+                    </div>
+                  </div>
+                </div>
+                <div class="row">
+            
+                  <div class="col-md-12">
+                    <div class="form-submit">
+                      <ngx-spinner bdColor="rgba(0,0,0,0.0)" size="small" color="#3498db" type="ball-clip-rotate"></ngx-spinner>
+                    <button type="submit" class="btn btn-primary btn-fill pull-right" [disabled]="!authGroup.valid || submitting">Entrar</button>
+                  </div>
+                  </div>
+                </div>
+                </form>
+              </div>
+            </div>
+      </div>
+    </div>
+   
+  </div>
+</div>

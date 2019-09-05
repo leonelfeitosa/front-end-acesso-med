@@ -1,0 +1,96 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title pull-left">Clientes</h4>
+          </div>
+          <div class="content table-responsive">
+            <div style="margin: 5%" *ngIf="!loaded">
+              <ngx-spinner bdColor="rgba(0,0,0,0.0)" size="medium" color="#3498db" type="ball-clip-rotate"></ngx-spinner>
+            </div>
+            <div class="row">
+              <div class="col-md-12 filtros">
+                <form class="form-inline" [formGroup]="filtroGroup">
+                  <div class="form-group">
+                      <label for="estado">Estado: </label>
+                      <select
+                            name="estado"
+                            id="estado"
+                            class="form-control"
+                            formControlName="estado"
+                          >
+                            <option value="selecione" disabled selected
+                              >Selecione um estado</option
+                            >
+                            <option [ngValue]="{ nome: 'todos' }">Todos</option>
+                            <option
+                              *ngFor="let estado of estados"
+                              [ngValue]="estado"
+                            >
+                              {{ estado.sigla + "-" + estado.nome }}</option
+                            >
+                          </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="cidade">Cidade: </label>
+                      <select
+                        name="cidade"
+                        id="cidade"
+                        class="form-control"
+                        formControlName="cidade"
+                      >
+                        <option value="selecione" disabled selected>{{
+                          cidadeOpcao
+                        }}</option>
+                        <option
+                          *ngFor="let cidade of cidades"
+                          [ngValue]="cidade"
+                        >
+                          {{ cidade.nome }}</option
+                        >
+                      </select>
+                  </div>
+                  <div class="form-group">
+                      <label for="pesquisar">Nome:</label>
+                      <input
+                        class="form-control"
+                        id="pesquisar"
+                        name="pesquisar"
+                        placeholder="Pesquisar"
+                        formControlName="pesquisa"
+                      />
+                    </div>
+                </form>
+              </div>
+            </div>
+            <div class="row" *ngIf="loaded">
+              <div class="col-md-12">
+                  <table class="table table-hover table-stripped">
+                      <thead>
+                        <tr>
+                          <th>Nome</th>
+                          <th>Estado</th>
+                          <th>Cidade</th>
+                          <th>Data de Nascimento</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr *ngFor="let cliente of filtros">
+                          <td>{{cliente.nome}}</td>
+                          <td>{{cliente.estado}}</td>
+                          <td>{{cliente.cidade}}</td>
+                          <td>{{cliente.data_nascimento}}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+              </div>
+            </div>
+            
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

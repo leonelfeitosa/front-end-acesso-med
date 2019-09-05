@@ -1,0 +1,126 @@
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title pull-left">Agentes</h4>
+            <a [routerLink]="'adicionar/'">
+              <button class="btn btn-success btn-fill pull-right">
+                <span><i class="pe-7s-add-user"></i></span>
+                <span>Cadastrar Agente</span>
+              </button>
+            </a>
+          </div>
+          <div class="content table-responsive ">
+            <ngx-spinner
+              bdColor="rgba(0,0,0,0.0)"
+              size="medium"
+              color="#3498db"
+              type="ball-clip-rotate"
+            >
+            </ngx-spinner>
+            <div class="row" *ngIf="loaded">
+              <div class="col-md-12 filtros">
+                <div>
+                  <form class="form-inline" [formGroup]="filtroGroup">
+                    <div class="form-group">
+                      <label for="situacao">Situação: </label>
+                      <select
+                        id="situacao"
+                        class="form-control"
+                        formControlName="situacao"
+                      >
+                        <option value="todos" selected="true">Todos</option>
+                        <option value="ativos">Ativos</option>
+                        <option value="inativos">Inativos</option>
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="estado">Estado: </label>
+                      <select
+                        name="estado"
+                        id="estado"
+                        class="form-control"
+                        formControlName="estado"
+                      >
+                        <option value="selecione" disabled selected
+                          >Selecione um estado</option
+                        >
+                        <option [ngValue]="{ nome: 'todos' }">Todos</option>
+                        <option
+                          *ngFor="let estado of estados"
+                          [ngValue]="estado"
+                        >
+                          {{ estado.sigla + "-" + estado.nome }}</option
+                        >
+                      </select>
+                    </div>
+
+                    <div class="form-group">
+                      <label for="cidade">Cidade: </label>
+                      <select
+                        name="cidade"
+                        id="cidade"
+                        class="form-control"
+                        formControlName="cidade"
+                      >
+                        <option value="selecione" disabled selected>{{
+                          cidadeOpcao
+                        }}</option>
+                        <option
+                          *ngFor="let cidade of cidades"
+                          [ngValue]="cidade"
+                        >
+                          {{ cidade.nome }}</option
+                        >
+                      </select>
+                    </div>
+                    <div class="form-group">
+                      <label for="pesquisar">Nome:</label>
+                      <input
+                        class="form-control"
+                        id="pesquisar"
+                        name="pesquisar"
+                        placeholder="Pesquisar"
+                        formControlName="pesquisa"
+                      />
+                    </div>
+                  </form>
+                </div>
+              </div>
+              <div class="col-md-4" style="margin-left: 2%;"></div>
+            </div>
+            <table class="table table-hover table-stripped">
+              <thead>
+                <tr>
+                  <th>Nome</th>
+                  <th>CPF</th>
+                  <th>Telefone</th>
+                  <th>Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let agente of filtros">
+                  <td>{{ agente.name }}</td>
+                  <td>{{ agente.cpf }}</td>
+                  <td>{{ agente.telefone }}</td>
+                  <td>
+                    <a [routerLink]="['editar/', agente.id]" name="editar">
+                      <button
+                        class="btn btn-primary btn-fill"
+                        name="editar"
+                        aria-label="editar"
+                      >
+                        <i class="pe-7s-pen"></i></button
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
