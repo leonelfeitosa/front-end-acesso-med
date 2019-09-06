@@ -27,7 +27,8 @@ export class CadastrarClinicaComponent implements OnInit {
     cnpj: new FormControl(''),
     endereco: new FormControl(''),
     estado: new FormControl(''),
-    cidade: new FormControl('')
+    cidade: new FormControl(''),
+    especialidades: new FormControl()
   }, {validators: confirmarSenha});
 
   edit = false;
@@ -131,13 +132,18 @@ export class CadastrarClinicaComponent implements OnInit {
 
   public addClinica() {
     if (this.clinicaGroup.valid) {
+      this.spinner.show();
+      const especialidades = this.clinicaGroup.value.especialidades.map((especialidade) => {
+        return especialidade.value;
+      })
       const newClinica: any = {
         name: this.clinicaGroup.value.name,
         password: this.clinicaGroup.value.password,
         cnpj: this.clinicaGroup.value.cnpj,
         endereco: this.clinicaGroup.value.endereco,
         estado: this.clinicaGroup.value.estado.sigla,
-        cidade: this.clinicaGroup.value.cidade.nome
+        cidade: this.clinicaGroup.value.cidade.nome,
+        especialidades: especialidades
       };
       if (this.edit) {
         this.clinicasService.updateClinica(this.clinicaId, newClinica).subscribe((clinica) => {
@@ -153,6 +159,8 @@ export class CadastrarClinicaComponent implements OnInit {
             }
           });
           this.router.navigateByUrl('/admin/clinicas');
+        }, () => {
+          this.spinner.hide();
         })
       } else {
       this.clinicasService.addClinica(newClinica).subscribe((result) => {
@@ -168,6 +176,8 @@ export class CadastrarClinicaComponent implements OnInit {
           }
         });
         this.router.navigateByUrl('/admin/clinicas');
+      }, () => {
+        this.spinner.hide();
       })
     }
     }

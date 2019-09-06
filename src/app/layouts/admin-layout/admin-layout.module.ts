@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-
+import { TagInputModule } from 'ngx-chips';
 import { NguiMapModule} from '@ngui/map';
 
 import { AdminLayoutRoutes } from './admin-layout.routing';
@@ -25,7 +25,8 @@ import { ClientesComponent } from '../../pages/clientes/clientes.component';
     ReactiveFormsModule,
     NguiMapModule.forRoot({apiUrl: 'https://maps.google.com/maps/api/js?key=YOUR_KEY_HERE'}),
     SweetAlert2Module.forRoot(),
-    SharedModuleModule
+    SharedModuleModule,
+    TagInputModule,
   ],
   declarations: [
     AgentesComponent,

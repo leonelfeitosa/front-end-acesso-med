@@ -42,7 +42,7 @@ export class CadastrarAgenteComponent implements OnInit {
     email: new FormControl(''),
     endereco: new FormControl(''),
     estado: new FormControl(''),
-    cidade: new FormControl('')
+    cidade: new FormControl(''),
   }, {validators: confirmarSenha});
 
   submitted = false;
@@ -107,6 +107,7 @@ export class CadastrarAgenteComponent implements OnInit {
             }
           });
         } else {
+          this.spinner.show();
           const newAgente: any = {
             name: this.agenteGroup.value.name,
             cpf: this.agenteGroup.value.cpf,
@@ -152,6 +153,8 @@ export class CadastrarAgenteComponent implements OnInit {
                   align: 'center'
                 }
               });
+            }, () => {
+              this.spinner.hide();
             });
             this.router.navigateByUrl('/admin/agentes');
           } else {
@@ -167,6 +170,8 @@ export class CadastrarAgenteComponent implements OnInit {
                   align: 'center'
                 }
               });
+            }, () => {
+              this.spinner.hide();
             });
             this.router.navigateByUrl('/admin/agentes');
           }

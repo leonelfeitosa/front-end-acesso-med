@@ -7,11 +7,11 @@
             <h4 class="title pull-left">Clientes</h4>
           </div>
           <div class="content table-responsive">
-            <div style="margin: 5%" *ngIf="!loaded">
+            <div>
               <ngx-spinner bdColor="rgba(0,0,0,0.0)" size="medium" color="#3498db" type="ball-clip-rotate"></ngx-spinner>
             </div>
             <div class="row">
-              <div class="col-md-12 filtros">
+              <div class="col-md-12 filtros" *ngIf="loaded">
                 <form class="form-inline" [formGroup]="filtroGroup">
                   <div class="form-group">
                       <label for="estado">Estado: </label>
