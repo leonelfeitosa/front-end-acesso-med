@@ -6,10 +6,9 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate, CanActivateChild{
-  
+export class AuthGuardService implements CanActivate, CanActivateChild {
 
-  constructor(private authService: AuthService, private router:Router) { }
+  constructor(private authService: AuthService, private router: Router) { }
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.authService.checkToken().pipe(map((data) => {
@@ -29,5 +28,4 @@ export class AuthGuardService implements CanActivate, CanActivateChild{
       return of(false)
     }))
   }
-  
 }
