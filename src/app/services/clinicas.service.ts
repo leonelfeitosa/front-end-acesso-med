@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ClinicasService {
   private clinicasUrl = 'http://localhost:3000/clinicas';
- 
+
   constructor(private http: HttpClient) { }
 
   private getToken() {

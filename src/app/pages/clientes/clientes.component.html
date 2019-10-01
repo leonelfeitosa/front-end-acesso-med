@@ -1,3 +1,28 @@
+<swal
+  #historicoSwal
+  title="Historico de Compras"
+  [showCancelButton]="false"
+  [showConfirmButton]="false"
+  [showCloseButton]="true"
+>
+  <table *swalPartial="swalTargets.content" class="table table-stripped">
+    <thead>
+      <tr>
+        <th>Procedimento</th>
+        <th>Valor</th>
+        <th>Data</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let compra of comprasCliente">
+        <td>{{compra.procedimento.nome}}</td>
+        <td>R$ {{compra.procedimento.valor}}</td>
+        <td>{{compra.dataCompra}}</td>
+      </tr>
+    </tbody>
+  </table>
+</swal>
+
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -77,7 +102,7 @@
                         </tr>
                       </thead>
                       <tbody>
-                        <tr *ngFor="let cliente of filtros">
+                        <tr *ngFor="let cliente of filtros" (click)="historico(cliente)">
                           <td>{{cliente.nome}}</td>
                           <td>{{cliente.estado}}</td>
                           <td>{{cliente.cidade}}</td>

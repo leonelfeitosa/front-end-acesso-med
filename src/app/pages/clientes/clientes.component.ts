@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup, FormControl } from '@angular/forms';
+import { SwalComponent, SwalPartialTargets } from '@sweetalert2/ngx-sweetalert2';
 import { Cliente } from '../../models/cliente';
 import { ClientesService } from '../../services/clientes.service';
 import { NgxSpinnerService } from 'ngx-spinner';
@@ -7,6 +8,7 @@ import { Estado } from '../../models/estado';
 import { Cidade } from '../../models/cidade';
 import { LocalService } from '../../services/local.service';
 import { FiltroService } from '../../services/filtro.service';
+import { ComprasService } from '../../services/compras.service';
 @Component({
   selector: 'app-clientes',
   templateUrl: './clientes.component.html',
@@ -21,17 +23,22 @@ export class ClientesComponent implements OnInit {
   estados: Estado[] = [];
   cidades: Cidade[] = [];
   cidadeOpcao = 'Selecione um estado';
+  comprasCliente = [];
 
   filtroGroup = new FormGroup({
     estado: new FormControl(''),
     cidade: new FormControl(''),
     pesquisa: new FormControl('')
-  })
+  });
+
+  @ViewChild('historicoSwal') private historicoSwal: SwalComponent;
 
   constructor(private clientesService: ClientesService,
               private spinner: NgxSpinnerService,
               private localService: LocalService,
-              private filtroService: FiltroService) { }
+              private filtroService: FiltroService,
+              public readonly swalTargets: SwalPartialTargets,
+              private comprasService: ComprasService) { }
 
   ngOnInit() {
     this.spinner.show();
@@ -104,6 +111,14 @@ export class ClientesComponent implements OnInit {
     } else {
       this.filtros = [...this.clientes];
     }
+  }
+
+  historico(cliente) {
+    this.clearArray(this.comprasCliente);
+    this.comprasService.getHistorico(cliente.id).subscribe((compras) => {
+      this.comprasCliente = compras;
+      this.historicoSwal.show();
+    });
   }
 
   configureForm() {

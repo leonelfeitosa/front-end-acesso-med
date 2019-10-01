@@ -27,7 +27,7 @@ const routes: Routes = [
         {
       path: 'admin',
       loadChildren: './layouts/admin-layout/admin-layout.module#AdminLayoutModule'
-  }],},
+  }], },
   {
     path: '**',
     redirectTo: 'admin/agentes'
