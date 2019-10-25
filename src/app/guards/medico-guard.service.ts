@@ -21,7 +21,7 @@ export class MedicoGuardService implements CanActivate, CanActivateChild {
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.authService.checkToken().pipe(map((data) => {
-      if (data.type === 'medico')
+      if (data.type === 'clinica')
         return true;
       localStorage.removeItem('token');
       localStorage.removeItem('username');

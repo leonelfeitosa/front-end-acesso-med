@@ -1,6 +1,7 @@
 import { Component, OnInit, ElementRef, Input } from '@angular/core';
 import { RouteInfo } from '../../models/route.info';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
+import { Router } from '@angular/router';
 
 @Component({
     // moduleId: module.id,
@@ -24,7 +25,7 @@ export class NavbarComponent implements OnInit{
     ];
     
 
-    constructor(location: Location,  private element: ElementRef) {
+    constructor(location: Location,  private element: ElementRef, private router:Router) {
       this.location = location;
           this.sidebarVisible = false;
     }
@@ -74,5 +75,15 @@ export class NavbarComponent implements OnInit{
           }
       }
       return 'Dashboard';
+    }
+
+    getUsername() {
+        return localStorage.getItem('username');
+    }
+
+    sair() {
+        localStorage.clear();
+        this.router.navigateByUrl('auth/login')
+
     }
 }
