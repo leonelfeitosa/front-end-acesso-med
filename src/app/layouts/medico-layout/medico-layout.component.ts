@@ -7,21 +7,18 @@ import { Subscription } from 'rxjs/Subscription';
 import PerfectScrollbar from 'perfect-scrollbar';
 import { Observable } from 'rxjs';
 import { RouteInfo } from '../../models/route.info';
-
 @Component({
-  selector: 'app-admin-layout',
-  templateUrl: './admin-layout.component.html',
-  styleUrls: ['./admin-layout.component.scss']
+  selector: 'app-medico-layout',
+  templateUrl: './medico-layout.component.html',
+  styleUrls: ['./medico-layout.component.scss']
 })
-export class AdminLayoutComponent implements OnInit {
+export class MedicoLayoutComponent implements OnInit {
   private _router: Subscription;
   private lastPoppedUrl: string;
   private yScrollStack: number[] = [];
-  rotasSidebarAdmin: RouteInfo[] = [
-    { path: '/admin/agentes', title: 'Agentes',  icon: 'pe-7s-id', class: '' },
-    { path: '/admin/clinicas', title: 'Clinicas', icon: 'pe-7s-home', class: ''},
-    { path: '/admin/clientes', title: 'Clientes', icon: 'pe-7s-users', class: '' }
-];
+  rotasSidebarMedico: RouteInfo[] = [
+    { path: '/medico/compras', title: 'Compras', icon: 'pe-7s-cash', class: ''}
+  ];
 
   constructor( public location: Location, private router: Router) {}
 

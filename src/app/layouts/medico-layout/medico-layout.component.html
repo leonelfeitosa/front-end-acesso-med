@@ -1,12 +1,12 @@
 
 <div class="wrapper">
   <div class="sidebar" data-color="azure" data-image="">
-      <app-sidebar [routes]="rotasSidebarAdmin"></app-sidebar>
+      <app-sidebar [routes]="rotasSidebarMedico"></app-sidebar>
       <div class="sidebar-background" ></div>
   </div>
 
   <div class="main-panel">
-      <navbar-cmp [mode]="'admin'"></navbar-cmp>
+      <navbar-cmp [mode]="'medico'"></navbar-cmp>
       <router-outlet></router-outlet>
       <div *ngIf="isMap('maps')">
           <footer-cmp></footer-cmp>

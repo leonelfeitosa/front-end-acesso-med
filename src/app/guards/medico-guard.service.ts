@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 @Injectable({
   providedIn: 'root'
 })
-export class AuthGuardService implements CanActivate, CanActivateChild {
+export class MedicoGuardService implements CanActivate, CanActivateChild {
 
   constructor(private authService: AuthService, private router: Router) { }
 
@@ -21,7 +21,7 @@ export class AuthGuardService implements CanActivate, CanActivateChild {
 
   canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | Observable<boolean> | Promise<boolean> {
     return this.authService.checkToken().pipe(map((data) => {
-      if (data.type === 'admin')
+      if (data.type === 'medico')
         return true;
       localStorage.removeItem('token');
       localStorage.removeItem('username');

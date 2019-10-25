@@ -24,4 +24,8 @@ export class ComprasService {
   public getHistorico(clienteId: string): Observable<any> {
     return this.http.get<any>(`${this.comprasUrl}/?cliente=${clienteId}`, this.getToken());
   }
+
+  public getCompras(): Observable<any> {
+    return this.http.get<any>(`${this.comprasUrl}/?clinica=true`, this.getToken());
+  }
 }

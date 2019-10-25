@@ -1,5 +1,5 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { ROUTES } from '../../sidebar/sidebar.component';
+import { Component, OnInit, ElementRef, Input } from '@angular/core';
+import { RouteInfo } from '../../models/route.info';
 import {Location, LocationStrategy, PathLocationStrategy} from '@angular/common';
 
 @Component({
@@ -13,6 +13,16 @@ export class NavbarComponent implements OnInit{
     location: Location;
     private toggleButton: any;
     private sidebarVisible: boolean;
+    @Input() mode: string;
+    rotasSidebarAdmin: RouteInfo[] = [
+        { path: '/admin/agentes', title: 'Agentes',  icon: 'pe-7s-id', class: '' },
+        { path: '/admin/clinicas', title: 'Clinicas', icon: 'pe-7s-home', class: ''},
+        { path: '/admin/clientes', title: 'Clientes', icon: 'pe-7s-users', class: '' }
+    ];
+    rotasSidebarMedico: RouteInfo[] = [
+      { path: '/medico/compras', title: 'Compras', icon: 'pe-7s-cash', class: ''}
+    ];
+    
 
     constructor(location: Location,  private element: ElementRef) {
       this.location = location;
@@ -20,7 +30,12 @@ export class NavbarComponent implements OnInit{
     }
 
     ngOnInit(){
-      this.listTitles = ROUTES.filter(listTitle => listTitle);
+      if (this.mode === 'admin') {
+        this.listTitles = this.rotasSidebarAdmin.filter(listTitle => listTitle);
+      } else if (this.mode === 'medico') {
+        this.listTitles = this.rotasSidebarMedico.filter(listTitle => listTitle);
+      }
+      
       const navbar: HTMLElement = this.element.nativeElement;
       this.toggleButton = navbar.getElementsByClassName('navbar-toggle')[0];
     }

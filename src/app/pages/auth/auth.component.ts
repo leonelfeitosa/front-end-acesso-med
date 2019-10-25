@@ -64,7 +64,13 @@ export class AuthComponent implements OnInit {
               await this.fireAuth.auth.signInWithCustomToken(result.token);
               this.fireAuth.auth.currentUser.getIdToken().then((token) => {
                 localStorage.setItem('token', token);
-                this.router.navigateByUrl('admin/agentes');
+                localStorage.setItem('username', result.username);
+                if (result.type == 'admin'){
+                  this.router.navigateByUrl('admin/agentes');
+                } else if (result.type == 'clinica') {
+                  this.router.navigateByUrl('medico/compras');
+                }
+                
                 this.spinner.hide();
                 subscriptionLogin.unsubscribe();
               });

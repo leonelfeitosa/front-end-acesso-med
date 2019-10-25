@@ -1,0 +1,79 @@
+<swal #detalhesSwal title="Detalhes da compra" [showCancelButton]="false">
+  <div *swalPartial="swalTargets.content">
+    <ul>
+      <li>Cliente:</li>
+      <li>
+        <ul>
+          <li>Nome: {{compraSelecionada.cliente.nome}}</li>
+          <li>Endereço: {{compraSelecionada.cliente.endereco}}</li>
+          <li>Cidade: {{compraSelecionada.cliente.cidade}}</li>
+          <li>Estado: {{compraSelecionada.cliente.estado}}</li>
+          <li>Data de Nascimento: {{compraSelecionada.cliente.data_nascimento}}</li>
+          <li>CPF: {{compraSelecionada.cliente.cpf}}</li>
+          <li>RG: {{compraSelecionada.cliente.rg}}</li>
+        </ul>
+      </li>
+      <li *ngIf="!isUndefined(compraSelecionada.cliente.responsavel)">Responsável: </li>
+      <li *ngIf="!isUndefined(compraSelecionada.cliente.responsavel)">
+        <ul>
+          <li>Nome: {{compraSelecionada.cliente.responsavel.nome}}</li>
+          <li>Endereço: {{compraSelecionada.cliente.responsavel.endereco}}</li>
+          <li>Cidade: {{compraSelecionada.cliente.responsavel.cidade}}</li>
+          <li>Estado: {{compraSelecionada.cliente.responsavel.estado}}</li>
+          <li>Data de Nascimento: {{compraSelecionada.cliente.responsavel.data_nascimento}}</li>
+          <li>CPF: {{compraSelecionada.cliente.responsavel.cpf}}</li>
+          <li>RG: {{compraSelecionada.cliente.responsavel.rg}}</li>
+        </ul>
+      </li>
+      <li>Procedimento:</li>
+      <li>
+        <ul>
+          <li>Nome: {{compraSelecionada.procedimento.nome}}</li>
+          <li>Valor: R$ {{compraSelecionada.procedimento.valor}}</li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</swal>
+
+<div class="main-content">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="header">
+            <h4 class="title pull-left">Compras</h4>
+          </div>
+          <div class="content table-responsive">
+            <div class="row">
+              <div class="col-md-12">
+                <table class="table table-hover table-stripped">
+                  <thead>
+                    <tr>
+                      <th>Nome do Cliente</th>
+                      <th>Procedimento</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr *ngFor="let compra of compras" (click)="abrirModal(compra)">
+                      <td>{{compra.cliente.nome}}</td>
+                      <td>{{compra.procedimento.nome}}</td>
+                      <td *ngIf="compra.pago">
+                        <button disabled class="btn btn-fill btn-success"><i class="pe-7s-cash"></i></button>
+                      </td>
+                      <td *ngIf="!compra.pago">
+                        <button disabled class="btn btn-fill btn-danger"><i class="pe-7s-close"></i></button>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
