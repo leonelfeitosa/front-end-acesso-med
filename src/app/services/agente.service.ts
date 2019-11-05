@@ -6,8 +6,10 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class AgenteService {
-
-  private agentesUrl = 'http://localhost:3000/agentes';
+  //teste
+  // private agentesUrl = 'http://localhost:3000/agentes';
+  // producao
+  private agentesUrl = 'http://162.243.161.30:3021/agentes';
 
   constructor(private http: HttpClient,
     ) { }

@@ -6,7 +6,11 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ComprasService {
-  private comprasUrl = 'http://localhost:3000/compras';
+  // teste
+  // private comprasUrl = 'http://localhost:3000/compras';
+  // prod
+  private comprasUrl = 'http://162.243.161.30:3021/compras';
+  
 
   constructor(private http: HttpClient) { }
 

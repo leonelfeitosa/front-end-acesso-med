@@ -8,8 +8,10 @@ import { catchError } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class AuthService {
-
-  private authUrl = 'http://localhost:3000/auth/login';
+  // teste
+  // private authUrl = 'http://localhost:3000/auth/login';
+  // prod
+  private authUrl = 'http://162.243.161.30:3021/auth/login';
 
   constructor(private http: HttpClient) { }
 
@@ -25,6 +27,6 @@ export class AuthService {
     const requestOptions = {
       headers: new HttpHeaders(headers),
     }
-    return this.http.get('http://localhost:3000/auth/get', requestOptions);
+    return this.http.get('http://162.243.161.30:3021/auth/get', requestOptions);
   }
 }
