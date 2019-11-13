@@ -21,6 +21,7 @@ import { AdminLayoutComponent } from './layouts/admin-layout/admin-layout.compon
 import { MedicoLayoutComponent } from './layouts/medico-layout/medico-layout.component';
 import { AuthComponent } from './pages/auth/auth.component';
 import { environment } from 'environments/environment.prod';
+import { EditarClienteComponent } from './pages/editar-cliente/editar-cliente.component';
 
 
 
@@ -50,6 +51,7 @@ import { environment } from 'environments/environment.prod';
     AdminLayoutComponent,
     MedicoLayoutComponent,
     AuthComponent,
+    EditarClienteComponent,
     
   ],
   providers: [AuthGuardService],

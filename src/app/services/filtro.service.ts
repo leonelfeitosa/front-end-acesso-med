@@ -9,37 +9,54 @@ export class FiltroService {
 
   constructor() { }
 
-  public filtroPesquisa(array: Array<any>, pesquisa: string): Array<any> {
-    return array.filter((element) => {
-      if (element.name.toLowerCase().startsWith(pesquisa.toLowerCase())) {
-        return element;
-      }
-    });
-  }
-  public filtroPesquisaCliente(array: Array<any>, pesquisa: string): Array<any> {
-    return array.filter((element) => {
-      if (element.nome.toLowerCase().startsWith(pesquisa.toLowerCase())) {
-        return element;
-      }
-    });
-  }
-
-
-  public filtroSituacao(array: Array<any>, situacao: string): Array<any> {
-    if (situacao === 'todos') {
-      return array;
-    }
-    if (situacao === 'ativos') {
+  public filtroPesquisaAgente(array: Array<any>, tipo: string, pesquisa: string): Array<any> {
+    if (tipo === 'nome') {
       return array.filter((element) => {
-        if (element.isActive) {
+        if (element.name.toLowerCase().startsWith(pesquisa.toLowerCase())) {
+          return element;
+        }
+      });
+    } else if (tipo === 'cpf') {
+      return array.filter((element) => {
+        if (element.cpf.toLowerCase().startsWith(pesquisa.toLowerCase())) {
+          return element;
+        }
+      })
+    }
+  }
+  public filtroPesquisaClinica(array: Array<any>, tipo: string, pesquisa: string): Array<any> {
+    if (tipo === 'nome') {
+      return array.filter((element) => {
+        if (element.name.toLowerCase().startsWith(pesquisa.toLowerCase())) {
+          return element;
+        }
+      });
+    } else if (tipo === 'cnpj') {
+      return array.filter((element) => {
+        if (element.cnpj.toLowerCase().startsWith(pesquisa.toLowerCase())) {
+          return element;
+        }
+      })
+    }
+  }
+  public filtroPesquisaCliente(array: Array<any>, tipo:string, pesquisa: string): Array<any> {
+    if (tipo === 'nome') {
+      return array.filter((element) => {
+        if (element.nome.toLowerCase().startsWith(pesquisa.toLowerCase())) {
+          return element;
+        }
+      });
+    } else if (tipo === 'cpf') {
+      return array.filter((element) => {
+        if (element.cpf.toLowerCase().startsWith(pesquisa.toLowerCase())) {
           return element;
         }
       });
     }
-    if (situacao === 'inativos') {
-      return array.filter((element) => !element.isActive);
-    }
+    
   }
+
+
 
   public filtroEstado(array: Array<any>, estado: Estado): Array<any> {
     return array.filter((element) => {

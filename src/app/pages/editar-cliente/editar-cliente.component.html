@@ -1,0 +1,215 @@
+<div class="main-content">
+    <ngx-spinner
+    bdColor="rgba(0,0,0,0.5)"
+    size="medium"
+    color="#3498db"
+    type="ball-clip-rotate"
+  ></ngx-spinner>
+  <div class="container-fluid">
+    <div class="row" >
+      <div class="col-md-6">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Cliente</h4>
+          </div>
+          <div class="content">
+            <form [formGroup]="clienteGroup">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="nomeCliente">Nome completo:</label>
+                    <input
+                      id="nomeCliente"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Nome Completo"
+                      name="nomeCliente"
+                      formControlName="nome"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="rgCliente">RG:</label>
+                    <input
+                      id="rgCliente"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="RG"
+                      name="rgCliente"
+                      formControlName="rg"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="cpfCliente">CPF:</label>
+                    <input
+                      id="cpfCliente"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="CPF"
+                      name="cpfCliente"
+                      formControlName="cpf"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="enderecoCliente">Endereço:</label>
+                    <input
+                      id="enderecoCliente"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Endereço"
+                      name="enderecoCliente"
+                      formControlName="endereco"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="estadoCliente">Estado:</label>
+                  <select name="estadoCliente" id="estadoCliente" class="form-control" formControlName="estado">
+                    <option *ngFor="let estado of estados" [ngValue]="estado">
+                      {{ estado.sigla + '-' + estado.nome }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="cidadeCliente">Cidade:</label>
+                  <select name="cidadeCliente" id="cidadeCliente" class="form-control" formControlName="cidade">
+                    <option *ngFor="let cidade of cidadesCliente" [ngValue]="cidade">
+                      {{ cidade.nome }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="dataNascCliente">Data de Nascimento:</label>
+                  <input type="date" class="form-control" id="dataNascCliente" formControlName="dataNasc">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-6" *ngIf="hasResponsavel">
+        <div class="card">
+          <div class="header">
+            <h4 class="title">Responsável</h4>
+          </div>
+          <div class="content">
+            <form [formGroup]="responsavelGroup">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="nomeResp">Nome completo:</label>
+                    <input
+                      id="nomeResp"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Nome Completo"
+                      name="nomeResp"
+                      formControlName="nome"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="rgResp">RG:</label>
+                    <input
+                      id="rgResp"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="RG"
+                      name="rgResp"
+                      formControlName="rg"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="cpfResp">CPF:</label>
+                    <input
+                      id="cpfResp"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="CPF"
+                      name="cpfResp"
+                      formControlName="cpf"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="form-group">
+                    <label for="enderecoResp">Endereço:</label>
+                    <input
+                      id="enderecoResp"
+                      type="text"
+                      class="form-control"
+                      required
+                      placeholder="Endereço"
+                      name="enderecoResp"
+                      formControlName="endereco"
+                    />
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <label for="estadoResp">Estado:</label>
+                  <select name="estadoResp" id="estadoResp" class="form-control" formControlName="estado">
+                    <option *ngFor="let estado of estados" [ngValue]="estado">
+                      {{ estado.sigla + '-' + estado.nome }}
+                    </option>
+                  </select>
+                </div>
+                <div class="col-md-6">
+                  <label for="cidadeResp">Cidade:</label>
+                  <select name="cidadeResp" id="cidadeResp" class="form-control" formControlName="cidade">
+                    <option *ngFor="let cidade of cidadesResponsavel" [ngValue]="cidade">
+                      {{ cidade.nome }}
+                    </option>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-12">
+                  <label for="dataNascResp">Data de Nascimento:</label>
+                  <input type="date" class="form-control" id="dataNascResp" formControlName="dataNasc">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <button (click)="submit()" class="btn btn-fill btn-success btn-block">Salvar alterações</button>
+      </div>
+    </div>
+  </div>
+</div>

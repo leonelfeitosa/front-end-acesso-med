@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { AgenteService } from '../../services/agente.service';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { LocalService } from '../../services/local.service';
@@ -6,6 +7,7 @@ import { Estado } from '../../models/estado';
 import { Cidade } from '../../models/cidade';
 import { FormControl, FormGroup } from '@angular/forms';
 import { FiltroService } from '../../services/filtro.service';
+import { SwalComponent, SwalPartialTargets } from '@sweetalert2/ngx-sweetalert2';
 
 @Component({
   selector: 'app-agentes',
@@ -14,40 +16,59 @@ import { FiltroService } from '../../services/filtro.service';
 })
 export class AgentesComponent implements OnInit {
   @ViewChild('cidadeSelect') cidadeSelect: ElementRef;
+  @ViewChild('deletarSwal') modalDeletar: SwalComponent;
   filtroGroup: FormGroup = new FormGroup({
     estado: new FormControl('selecione'),
     cidade: new FormControl('selecione'),
     pesquisa: new FormControl(''),
-    situacao: new FormControl('todos')
+    filtro: new FormControl('nome'),
   })
   agentes = [];
   filtros: any[] = [];
   filtrosEstadoCidade: any[] = [];
   filtroPesquisa: string;
   loaded = false;
+  inativo = false;
 
   estados: Array<Estado> = [];
   cidades: Array<Cidade> = [];
   cidadeOpcao = 'Selecione um estado';
-  constructor(private agenteService: AgenteService,
+  constructor(private route: ActivatedRoute,
+    private agenteService: AgenteService,
+    public readonly swalTargets: SwalPartialTargets,
     private spinner: NgxSpinnerService,
     private localService: LocalService,
     private filtroService: FiltroService) { }
 
   ngOnInit() {
+    this.getInativos();
     this.spinner.show();
     this.configureForm();
     this.getAgentes();
   }
 
-  getAgentes(): void {
-    const agentesSubscription = this.agenteService.getAgentes().subscribe((retorno) => {
-      this.agentes = [...retorno];
-      this.filtros = [...this.agentes];
-      this.loaded = true;
-      this.spinner.hide();
-      agentesSubscription.unsubscribe();
-    });
+  async getAgentes() {
+    this.clearArray(this.agentes);
+    this.clearArray(this.filtros);
+    if (this.inativo) {
+      const agentesSubscription = this.agenteService.getAgentesInativos().subscribe((retorno) => {
+
+        this.agentes = [...retorno];
+        this.filtros = [...this.agentes];
+        this.loaded = true;
+        this.spinner.hide();
+      });
+
+    } else {
+      const agentesSubscription = this.agenteService.getAgentesAtivos().subscribe((retorno) => {
+        this.agentes = [...retorno];
+        this.filtros = [...this.agentes];
+        this.loaded = true;
+        this.spinner.hide();
+        agentesSubscription.unsubscribe();
+      });
+    }
+
   }
 
   getEstados() {
@@ -76,6 +97,18 @@ export class AgentesComponent implements OnInit {
     );
   }
 
+  getInativos() {
+    try {
+      const data = this.route.data.subscribe(d => {
+        console.log(d.inativo);
+        this.inativo = d.inativo;
+      });
+
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
   configureForm(): void {
     this.getEstados();
     this.filtroGroup.get('estado').valueChanges.subscribe((value) => {
@@ -83,9 +116,6 @@ export class AgentesComponent implements OnInit {
     });
     this.filtroGroup.get('cidade').valueChanges.subscribe((value) => {
       this.cidadeSelecionada(value);
-    });
-    this.filtroGroup.get('situacao').valueChanges.subscribe((value) => {
-      this.filtro(value);
     });
     this.filtroGroup.get('pesquisa').valueChanges.subscribe((value) => {
       this.filtrarPesquisa(value);
@@ -103,8 +133,24 @@ export class AgentesComponent implements OnInit {
       this.filtrosEstadoCidade = this.filtroService.filtroEstado([...this.agentes], valor);
       this.filtros = [...this.filtrosEstadoCidade];
     }
-    this.filtroGroup.get('cidade').setValue('selecione', {emitEvent: false});
+    this.filtroGroup.get('cidade').setValue('selecione', { emitEvent: false });
 
+  }
+
+  async apagarAgente(agenteId) {
+    try {
+      await this.agenteService.apagarAgente(agenteId).toPromise();
+      this.getAgentes();
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  abrirModal(agenteId) {
+    this.modalDeletar.show();
+    this.modalDeletar.confirm.subscribe((e) => {
+      this.apagarAgente(agenteId);
+    });
   }
 
   cidadeSelecionada(cidade: Cidade) {
@@ -114,21 +160,21 @@ export class AgentesComponent implements OnInit {
 
   filtro(filtro) {
     this.clearArray(this.filtros);
-    this.filtros = this.filtroService.filtroSituacao([...this.agentes], filtro);
     if (filtro === 'todos') {
       this.cidadeOpcao = 'Selecione um estado'
       this.clearArray(this.cidades);
-      this.filtroGroup.get('cidade').setValue('selecione', {emitEvent: false});
-      this.filtroGroup.get('estado').setValue('selecione', {emitEvent: false});
+      this.filtroGroup.get('cidade').setValue('selecione', { emitEvent: false });
+      this.filtroGroup.get('estado').setValue('selecione', { emitEvent: false });
     }
   }
 
   filtrarPesquisa(filtro: string) {
+    const tipo = this.filtroGroup.get('filtro').value;
     if (this.filtro.length > 0) {
       if (this.filtrosEstadoCidade.length > 0) {
-        this.filtros = this.filtroService.filtroPesquisa([...this.filtrosEstadoCidade], filtro);
+        this.filtros = this.filtroService.filtroPesquisaAgente([...this.filtrosEstadoCidade], tipo, filtro);
       } else {
-        this.filtros = this.filtroService.filtroPesquisa([...this.agentes], filtro);
+        this.filtros = this.filtroService.filtroPesquisaAgente([...this.agentes], tipo, filtro);
       }
     } else {
       this.filtros = [...this.agentes];

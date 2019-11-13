@@ -1,4 +1,30 @@
 <swal
+  #deletarProcedimentoSwal
+  title="Apagar Procedimento"
+  
+  [showCancelButton]="true"
+  [confirmButtonClass]="'btn btn-fill btn-success'"
+  [confirmButtonText]="'Sim'"
+  [cancelButtonText]="'Não'"
+>
+<div *swalPartial="swalTargets.content">
+    Tem certeza de que deseja apagar este procedimento?
+</div>
+</swal>
+<swal
+  #deletarClinicaSwal
+  title="Apagar Clinica"
+  
+  [showCancelButton]="true"
+  [confirmButtonClass]="'btn btn-fill btn-success'"
+  [confirmButtonText]="'Sim'"
+  [cancelButtonText]="'Não'"
+>
+<div *swalPartial="swalTargets.content">
+    Tem certeza de que deseja apagar esta Clinica?
+</div>
+</swal>
+<swal
   #procedimentosSwal
   title="Cadastrar Procedimento"
   [confirmButtonClass]="'btn btn-fill btn-success'"
@@ -41,6 +67,48 @@
     Cadastrar
   </ng-container>
 </swal>
+<swal
+  #edicaoSwal
+  title="Editar Procedimento"
+  [confirmButtonClass]="'btn btn-fill btn-success'"
+  [options]="{ showLoaderOnConfirm: true }"
+>
+  <form *swalPartial="swalTargets.content" [formGroup]="procedimentoGroup">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Nome do Procedimento</label>
+          <input
+            type="text"
+            required
+            name="nomeProcedimento"
+            placeholder="Nome do Procedimento"
+            class="form-control"
+            formControlName="nome"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="form-group">
+          <label>Valor do Procedimento</label>
+          <input
+            type="number"
+            required
+            name="valorProcedimento"
+            placeholder="Valor do Procedimento"
+            class="form-control"
+            formControlName="valor"
+          />
+        </div>
+      </div>
+    </div>
+  </form>
+  <ng-container *swalPartial="swalTargets.confirmButton">
+    Salvar
+  </ng-container>
+</swal>
 <div class="main-content">
   <div class="container-fluid">
     <div class="row">
@@ -48,12 +116,26 @@
         <div class="card">
           <div class="header">
             <h4 class="title pull-left">Clínicas</h4>
-            <a [routerLink]="'adicionar/'">
-              <button class="btn btn-success btn-fill pull-right">
-                <span><i class="pe-7s-add-user"></i></span>
-                <span>Cadastrar Clínica</span>
-              </button>
-            </a>
+            <div class="pull-right">
+              <a [routerLink]="'inativos/'" *ngIf="!inativo">
+                <button class="btn btn-primary btn-fill">
+                    <span><i class="pe-7s-users"></i></span>
+                    <span>Inativos</span>
+                  </button>
+              </a>
+              <a [routerLink]="'/admin/clinicas/'" *ngIf="inativo">
+                <button class="btn btn-primary btn-fill">
+                    <span><i class="pe-7s-users"></i></span>
+                    <span>Ativos</span>
+                  </button>
+              </a>
+              <a [routerLink]="'adicionar/'">
+                <button class="btn btn-success btn-fill">
+                  <span><i class="pe-7s-add-user"></i></span>
+                  <span>Cadastrar Clínica</span>
+                </button>
+              </a>
+            </div>
           </div>
           <div class="content table-responsive ">
             <ngx-spinner
@@ -65,20 +147,6 @@
             <div class="row" *ngIf="loaded">
               <div class="col-md-12 filtros">
                 <form class="form-inline" [formGroup]="filtroGroup">
-                  <div class="form-group">
-                    <label for="situacao">Situação: </label>
-                    <select
-                      name="situacao"
-                      id="situacao"
-                      class="form-control"
-                      formControlName="situacao"
-                    >
-                      <option value="todos" [selected]="true">Todos</option>
-                      <option value="ativos">Ativos</option>
-                      <option value="inativos">Inativos</option>
-                    </select>
-                  </div>
-
                   <div class="form-group">
                     <label for="estado">Estado: </label>
                     <select
@@ -146,7 +214,7 @@
                     <td>{{ clinica.endereco }}</td>
                     <td>{{ clinica.cnpj }}</td>
                     <td>
-                      <a [routerLink]="['editar/', clinica.id]">
+                      <a (click)="abrirEdicao(clinica.id); $event.stopPropagation();">
                         <button
                           class="btn btn-primary btn-fill"
                           name="editar"
@@ -155,6 +223,15 @@
                           <i class="pe-7s-pen"></i>
                         </button>
                       </a>
+                      <a (click)="abrirModalDeletarClinica(clinica.id); $event.stopPropagation();" *ngIf="inativo">
+                          <button
+                            class="btn btn-danger btn-fill"
+                            name="apagar"
+                            aria-label="apagar"
+                          >
+                            <i class="pe-7s-trash"></i>
+                          </button>
+                        </a>
                     </td>
                   </tr>
                   <tr *ngIf="clinica.collapsed">
@@ -163,7 +240,7 @@
                         <div class="col-md-4 pull-right">
                           <button
                             class="btn btn-success btn-fill"
-                            (click)="abrirModal(clinica)"
+                            (click)="abrirModal(clinica); $event.stopPropagation();"
                           >
                             <i class="pe-7s-note2"></i>Cadastrar Procedimento
                           </button>
@@ -176,11 +253,18 @@
                         </div>
                       </div>
                       <div
-                        class="collapse in"
-                        *ngFor="let procedimento of clinica.procedimentos"
-                        style="padding-left: 2%"
+                        class="collapse in row"
+                        *ngFor="let procedimento of clinica.procedimentos; let i = index;"
+                        [attr.data.index]="i"
+                        style="padding-left: 2%; margin-bottom: 2%;"
                       >
-                        - {{ procedimento.nome }} - R$ {{ procedimento.valor }}
+                        <div class="col-md-3">
+                            - {{ procedimento.nome }} - R$ {{ procedimento.valor }}
+                        </div>
+                        <div class="col-md-3 pull-right">
+                          <button (click)="abrirModalEdicao(procedimento, clinica, i)" class="btn btn-primary btn-fill" style="margin-right: 1%;"><i class="pe-7s-pen"></i></button>
+                          <button (click)="abrirModalDeletarProcedimento(clinica, i)" class="btn btn-danger btn-fill"><i class="pe-7s-trash"></i></button>
+                        </div>
                       </div>
                     </td>
                   </tr>

@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class ClinicasService {
   // teste
-  // private clinicasUrl = 'http://localhost:3000/clinicas';
+  private clinicasUrl = 'http://localhost:3021/clinicas';
   // prod
-  private clinicasUrl = 'http://162.243.161.30:3021/clinicas';
+  // private clinicasUrl = 'http://162.243.161.30:3021/clinicas';
   constructor(private http: HttpClient) { }
 
   private getToken() {
@@ -27,6 +27,14 @@ export class ClinicasService {
     return this.http.get<any[]>(this.clinicasUrl, this.getToken());
   }
 
+  public getActiveClinicas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.clinicasUrl}/?situacao=ativo`, this.getToken());
+  }
+
+  public getInactiveClinicas(): Observable<any[]> {
+    return this.http.get<any[]>(`${this.clinicasUrl}/?situacao=inativo`, this.getToken());
+  }
+
   public getClinica(id: any): Observable<any> {
     return this.http.get<any>(`${this.clinicasUrl}/${id}`, this.getToken());
   }
@@ -37,6 +45,10 @@ export class ClinicasService {
 
   public updateClinica(clinicaId: any, clinica: any): Observable<any> {
     return this.http.put<any>(`${this.clinicasUrl}/${clinicaId}`, clinica, this.getToken());
+  }
+
+  public deleteClinica(clinicaId): Observable<any> {
+    return this.http.delete<any>(`${this.clinicasUrl}/${clinicaId}`, this.getToken());
   }
 
   public addProcedimento(clinicaId: any, procedimento: any): Observable<any> {

@@ -8,9 +8,9 @@ import { Cliente } from '../models/cliente';
 })
 export class ClientesService {
   // teste
-  // private clientesUrl = 'http://localhost:3000/clientes';
+  private clientesUrl = 'http://localhost:3021/clientes';
   // prod
-  private clientesUrl = 'http://162.243.161.30:3021/clientes';
+  // private clientesUrl = 'http://162.243.161.30:3021/clientes';
   constructor(private http: HttpClient) { }
 
   private getToken() {
@@ -26,5 +26,13 @@ export class ClientesService {
 
   public getClientes(): Observable<Cliente[]> {
     return this.http.get<Cliente[]>(this.clientesUrl, this.getToken());
+  }
+
+  public getCliente(clienteId): Observable<any> {
+    return this.http.get<any>(`${this.clientesUrl}/${clienteId}`, this.getToken());
+  }
+
+  public updateCliente(clienteId, cliente): Observable<any> {
+    return this.http.put<any>(`${this.clientesUrl}/${clienteId}`, cliente, this.getToken());
   }
 }

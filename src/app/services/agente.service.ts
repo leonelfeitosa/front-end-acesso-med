@@ -7,9 +7,9 @@ import { Observable } from 'rxjs';
 })
 export class AgenteService {
   //teste
-  // private agentesUrl = 'http://localhost:3000/agentes';
+  private agentesUrl = 'http://localhost:3021/agentes';
   // producao
-  private agentesUrl = 'http://162.243.161.30:3021/agentes';
+  // private agentesUrl = 'http://162.243.161.30:3021/agentes';
 
   constructor(private http: HttpClient,
     ) { }
@@ -29,6 +29,14 @@ export class AgenteService {
     return this.http.get<any>(this.agentesUrl, this.getToken());
   }
 
+  public getAgentesAtivos(): Observable<any> {
+    return this.http.get<any>(`${this.agentesUrl}/?situacao=ativo`, this.getToken());
+  }
+
+  public getAgentesInativos(): Observable<any> {
+    return this.http.get<any>(`${this.agentesUrl}/?situacao=inativo`, this.getToken());
+  }
+
   public getAgente(agenteId: any): Observable<any> {
     return this.http.get<any>(`${this.agentesUrl}/${agenteId}`, this.getToken());
   }
@@ -39,5 +47,9 @@ export class AgenteService {
   }
   public updateAgente(agenteID: any, agente: any): Observable<any> {
     return this.http.put<any>(`${this.agentesUrl}/${agenteID}`, agente, this.getToken());
+  }
+
+  public apagarAgente(agenteId: any): Observable<any> {
+    return this.http.delete<any>(`${this.agentesUrl}/${agenteId}`, this.getToken());
   }
 }

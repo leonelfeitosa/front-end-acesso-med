@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { FormGroup, FormControl } from '@angular/forms';
 import { SwalComponent, SwalPartialTargets } from '@sweetalert2/ngx-sweetalert2';
 import { Cliente } from '../../models/cliente';
@@ -16,8 +17,8 @@ import { ComprasService } from '../../services/compras.service';
 })
 export class ClientesComponent implements OnInit {
 
-  clientes: Array<Cliente> = [];
-  filtros: Array<Cliente> = [];
+  clientes: Array<any> = [];
+  filtros: Array<any> = [];
   filtrosEstadoCidade: Array<Cliente> = [];
   loaded = false;
   estados: Estado[] = [];
@@ -28,12 +29,14 @@ export class ClientesComponent implements OnInit {
   filtroGroup = new FormGroup({
     estado: new FormControl(''),
     cidade: new FormControl(''),
+    filtro: new FormControl('nome'),
     pesquisa: new FormControl('')
   });
 
   @ViewChild('historicoSwal') private historicoSwal: SwalComponent;
 
-  constructor(private clientesService: ClientesService,
+  constructor(private router: Router,
+              private clientesService: ClientesService,
               private spinner: NgxSpinnerService,
               private localService: LocalService,
               private filtroService: FiltroService,
@@ -102,11 +105,12 @@ export class ClientesComponent implements OnInit {
   }
 
   filtrarPesquisa(filtro: string) {
+    const tipo = this.filtroGroup.get('filtro').value;
     if (filtro.length > 0) {
       if (this.filtrosEstadoCidade.length > 0) {
-        this.filtros = this.filtroService.filtroPesquisaCliente([...this.filtrosEstadoCidade], filtro);
+        this.filtros = this.filtroService.filtroPesquisaCliente([...this.filtrosEstadoCidade], tipo, filtro);
       } else {
-        this.filtros = this.filtroService.filtroPesquisaCliente([...this.clientes], filtro);
+        this.filtros = this.filtroService.filtroPesquisaCliente([...this.clientes], tipo, filtro);
       }
     } else {
       this.filtros = [...this.clientes];
@@ -119,6 +123,10 @@ export class ClientesComponent implements OnInit {
       this.comprasCliente = compras;
       this.historicoSwal.show();
     });
+  }
+
+  abrirEdicao(clienteId) {
+    this.router.navigateByUrl(`/admin/clientes/editar/${clienteId}`);
   }
 
   configureForm() {

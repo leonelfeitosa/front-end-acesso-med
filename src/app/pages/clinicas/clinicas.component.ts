@@ -1,4 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ClinicasService } from '../../services/clinicas.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { SwalComponent, SwalPartialTargets } from '@sweetalert2/ngx-sweetalert2';
@@ -25,7 +26,8 @@ export class ClinicasComponent implements OnInit {
   loaded = false;
   estados: Array<Estado> = [];
   cidades: Array<Cidade> = [];
-  cidadeOpcao = 'Selecione um estado'
+  cidadeOpcao = 'Selecione um estado';
+  inativo = false;
 
   procedimentoGroup = new FormGroup({
     nome: new FormControl('', Validators.required),
@@ -33,21 +35,26 @@ export class ClinicasComponent implements OnInit {
   });
 
   filtroGroup = new FormGroup({
-    situacao: new FormControl('todos'),
     estado: new FormControl('selecione'),
     cidade: new FormControl('selecione'),
     pesquisa: new FormControl('')
   })
 
   @ViewChild('procedimentosSwal') private procedimentoModal: SwalComponent;
+  @ViewChild('edicaoSwal') private edicaoSwal: SwalComponent;
+  @ViewChild('deletarProcedimentoSwal') private deletarProcedimentoSwal: SwalComponent;
+  @ViewChild('deletarClinicaSwal') private deletarClinicaSwal: SwalComponent;
 
   constructor(private clinicasService: ClinicasService,
     public readonly swalTargets: SwalPartialTargets,
+    private route: ActivatedRoute,
+    private router: Router,
     private spinner: NgxSpinnerService,
     private localService: LocalService,
     private filtroService: FiltroService) { }
 
   ngOnInit() {
+    this.getInativos();
     this.spinner.show();
     this.configureForm();
     this.getClinicas();
@@ -97,8 +104,12 @@ export class ClinicasComponent implements OnInit {
     this.filtros = this.filtroService.filtroCidade(this.filtrosEstadoCidade, cidade);
   }
 
-  getClinicas(): void {
-    const clinicaSubscription = this.clinicasService.getClinicas().subscribe((clinicas) => {
+  async getClinicas() {
+    this.clearArray(this.clinicas);
+    this.clearArray(this.filtros);
+    try {
+      if (this.inativo) {
+      const clinicas = await this.clinicasService.getInactiveClinicas().toPromise();
       this.clinicas = [...clinicas];
       for (let i = 0; i < this.clinicas.length; i++) {
         this.clinicas[i].collapsed = false;
@@ -106,13 +117,31 @@ export class ClinicasComponent implements OnInit {
       this.filtros = clinicas;
       this.loaded = true;
       this.spinner.hide();
-      clinicaSubscription.unsubscribe();
+      } else {
+        const clinicas = await this.clinicasService.getActiveClinicas().toPromise();
+      this.clinicas = [...clinicas];
+      for (let i = 0; i < this.clinicas.length; i++) {
+        this.clinicas[i].collapsed = false;
+      }
+      this.filtros = clinicas;
+      this.loaded = true;
+      this.spinner.hide();
+      }
+      
+    } catch (err) {
+      console.log(err);
+    }
+  }
+
+  async getInativos() {
+    const dataSub = this.route.data.subscribe((data) => {
+      this.inativo = data.inativo;
+      console.log(this.inativo);
     });
   }
 
   async filtro(filtro: string) {
     this.clearArray(this.filtros);
-    this.filtros = this.filtroService.filtroSituacao([...this.clinicas], filtro);
     if (filtro === 'todos') {
       this.cidadeOpcao = 'Selecione um estado'
       this.clearArray(this.cidades);
@@ -120,13 +149,15 @@ export class ClinicasComponent implements OnInit {
       this.filtroGroup.get('estado').setValue('selecione', { emitEvent: false });
     }
   }
+
   async filtrarPesquisa(filtro: string) {
     this.clearArray(this.filtros);
+    const tipo = this.filtroGroup.get('filtro').value;
     if (filtro.length > 0) {
       if (this.filtrosEstadoCidade.length > 0) {
-        this.filtros = this.filtroService.filtroPesquisa([...this.filtrosEstadoCidade], filtro);
+        this.filtros = this.filtroService.filtroPesquisaClinica([...this.filtrosEstadoCidade], tipo, filtro);
       } else {
-        this.filtros = this.filtroService.filtroPesquisa([...this.clinicas], filtro);
+        this.filtros = this.filtroService.filtroPesquisaClinica([...this.clinicas], tipo, filtro);
       }
     } else {
       this.filtros = [...this.clinicas];
@@ -152,6 +183,45 @@ export class ClinicasComponent implements OnInit {
     this.clinicaAtual = clinica;
     this.procedimentoModal.show();
   }
+  
+  abrirModalEdicao(procedimento, clinica, index) {
+    this.clinicaAtual = clinica;
+    this.procedimentoGroup.get('nome').setValue(procedimento.nome);
+    this.procedimentoGroup.get('valor').setValue(procedimento.valor);
+    this.edicaoSwal.show();
+    this.edicaoSwal.confirm.subscribe(async (e) => {
+      const newProcedimento = {
+        nome: this.procedimentoGroup.get('nome').value,
+        valor: this.procedimentoGroup.get('valor').value,
+      };
+      this.clinicaAtual.procedimentos[index] = newProcedimento;
+      await this.clinicasService.updateClinica(clinica.id, this.clinicaAtual).toPromise();
+      this.getClinicas();
+    });
+    
+  }
+
+  abrirModalDeletarProcedimento(clinica, index) {
+    this.clinicaAtual = clinica;
+    this.deletarProcedimentoSwal.show();
+    this.deletarProcedimentoSwal.confirm.subscribe(async (e) => {
+      this.clinicaAtual.procedimentos.splice(index, 1);
+      await this.clinicasService.updateClinica(clinica.id, this.clinicaAtual).toPromise();
+      this.getClinicas();
+    })
+  }
+
+  abrirModalDeletarClinica(clinicaId) {
+    this.deletarClinicaSwal.show();
+    this.deletarClinicaSwal.confirm.subscribe(async (e) => {
+      await this.clinicasService.deleteClinica(clinicaId).toPromise();
+      this.getClinicas();
+    })
+  }
+
+  abrirEdicao(clinicaId): void {
+    this.router.navigateByUrl(`/admin/clinicas/editar/${clinicaId}`);
+  }
 
   configureForm(): void {
     this.getEstados();
@@ -161,9 +231,7 @@ export class ClinicasComponent implements OnInit {
     this.filtroGroup.get('cidade').valueChanges.subscribe((value) => {
       this.cidadeSelecionada(value);
     });
-    this.filtroGroup.get('situacao').valueChanges.subscribe((value) => {
-      this.filtro(value);
-    });
+
     this.filtroGroup.get('pesquisa').valueChanges.subscribe((value) => {
       this.filtrarPesquisa(value);
     })
@@ -181,13 +249,13 @@ export class ClinicasComponent implements OnInit {
         icon: '',
         message: 'Procedimento adicionado'
       }, {
-          type: 'info',
-          timer: '1000',
-          placement: {
-            from: 'top',
-            align: 'center'
-          }
-        });
+        type: 'info',
+        timer: '1000',
+        placement: {
+          from: 'top',
+          align: 'center'
+        }
+      });
     })
   }
 
