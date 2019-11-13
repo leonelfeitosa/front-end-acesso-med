@@ -8,9 +8,9 @@ import { Cliente } from '../models/cliente';
 })
 export class ClientesService {
   // teste
-  private clientesUrl = 'http://localhost:3021/clientes';
+  // private clientesUrl = 'http://localhost:3021/clientes';
   // prod
-  // private clientesUrl = 'http://162.243.161.30:3021/clientes';
+  private clientesUrl = 'http://162.243.161.30:3021/clientes';
   constructor(private http: HttpClient) { }
 
   private getToken() {
