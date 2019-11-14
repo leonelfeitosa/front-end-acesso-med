@@ -48,6 +48,7 @@ export class EditarClienteComponent implements OnInit {
   ngOnInit() {
     this.getCliente();
     this.getEstados();
+    this.configureForm();
   }
 
   private getCliente() {
@@ -80,6 +81,7 @@ export class EditarClienteComponent implements OnInit {
   }
 
   private async getCidadesCliente(estadoId) {
+    this.clearArray(this.cidadesCliente);
     try {
       const cidades = await this.localService.getCidades(estadoId).toPromise();
       this.cidadesCliente = cidades;
@@ -88,6 +90,7 @@ export class EditarClienteComponent implements OnInit {
     }
   }
   private async getCidadesResponsavel(estadoId) {
+    this.clearArray(this.cidadesResponsavel);
     try {
       const cidades = await this.localService.getCidades(estadoId).toPromise();
       this.cidadesResponsavel = cidades;
@@ -185,6 +188,21 @@ export class EditarClienteComponent implements OnInit {
     });
     this.spinner.hide();
     this.router.navigateByUrl('/admin/clientes');
+  }
+
+  private configureForm() {
+    this.clienteGroup.get('estado').valueChanges.subscribe((value) => {
+      this.getCidadesCliente(value.id);
+    });
+    this.responsavelGroup.get('estado').valueChanges.subscribe((value) => {
+      this.getCidadesResponsavel(value.id);
+    });
+  }
+
+  private clearArray(array: Array<any>) {
+    while (array.length > 0) {
+      array.pop();
+    }
   }
 
 }

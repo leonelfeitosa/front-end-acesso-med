@@ -116,7 +116,6 @@
         <div class="card">
           <div class="header">
             <h4 class="title pull-left">Clínicas</h4>
-<<<<<<< HEAD
             <div class="pull-right">
               <a [routerLink]="'inativos/'" *ngIf="!inativo">
                 <button class="btn btn-primary btn-fill">
@@ -137,13 +136,6 @@
                 </button>
               </a>
             </div>
-=======
-            <a [routerLink]="'adicionar/'">
-              <button class="btn btn-success btn-fill pull-right">
-                <span>Cadastrar Clínica</span>
-              </button>
-            </a>
->>>>>>> 859b22846ae8097d8bd8bc686891b1768ff4b8ab
           </div>
           <div class="content table-responsive ">
             <ngx-spinner
@@ -156,24 +148,6 @@
               <div class="col-md-12 filtros">
                 <form class="form-inline" [formGroup]="filtroGroup">
                   <div class="form-group">
-<<<<<<< HEAD
-=======
-                    <label for="situacao">Status: </label>
-                  <br>
-                    <select
-                      name="situacao"
-                      id="situacao"
-                      class="form-control"
-                      formControlName="situacao"
-                    >
-                      <option value="todos" [selected]="true">Todos</option>
-                      <option value="ativos">Ativos</option>
-                      <option value="inativos">Inativos</option>
-                    </select>
-                  </div>
-
-                  <div class="form-group">
->>>>>>> 859b22846ae8097d8bd8bc686891b1768ff4b8ab
                     <label for="estado">Estado: </label>
                     <br>
                     <select
