@@ -136,7 +136,7 @@ export class ClinicasComponent implements OnInit {
   async getInativos() {
     const dataSub = this.route.data.subscribe((data) => {
       this.inativo = data.inativo;
-      console.log(this.inativo);
+      
     });
   }
 

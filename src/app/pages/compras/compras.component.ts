@@ -21,7 +21,7 @@ export class ComprasComponent implements OnInit {
 
   private getCompras() {
     this.comprasService.getCompras().subscribe((compras) => {
-      console.log(compras);
+      
       this.compras = compras;
     });
   }

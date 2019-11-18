@@ -100,7 +100,7 @@ export class AgentesComponent implements OnInit {
   getInativos() {
     try {
       const data = this.route.data.subscribe(d => {
-        console.log(d.inativo);
+        
         this.inativo = d.inativo;
       });
 

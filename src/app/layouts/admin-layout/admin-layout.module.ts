@@ -16,6 +16,7 @@ import { ClinicasComponent } from '../../pages/clinicas/clinicas.component';
 import { CadastrarClinicaComponent } from '../../pages/cadastrar-clinica/cadastrar-clinica.component';
 import { FotoPerfilComponent } from '../../components/foto-perfil/foto-perfil.component';
 import { ClientesComponent } from '../../pages/clientes/clientes.component';
+import { EditarClienteComponent } from '../../pages/editar-cliente/editar-cliente.component';
 
 @NgModule({
   imports: [
@@ -35,6 +36,7 @@ import { ClientesComponent } from '../../pages/clientes/clientes.component';
     CadastrarClinicaComponent,
     FotoPerfilComponent,
     ClientesComponent,
+    EditarClienteComponent
   ]
 })
 
