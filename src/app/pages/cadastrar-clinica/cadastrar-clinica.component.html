@@ -95,9 +95,9 @@
                   </div>
                 </div>
               </div>
-
+              
               <!-- Senhas -->
-              <div class="row">
+              <div class="row"  *ngIf="!edit">
                 <div class="col-md-6">
                   <div class="form-group">
                     <label>Senha</label>
@@ -123,18 +123,7 @@
                   </div>
                 </div>
               </div>
-              <div class="row">
-                <div class="col-md-12">
-                  <label for="especialidades">Especialidades: </label>
-                  <tag-input
-                    id="especialidades"
-                    formControlName="especialidades"
-                    [placeholder]="'Insira uma nova especialidade'"
-                    [secondaryPlaceholder]="'Insira aqui as especialidades'"
-                    [inputClass]="'form-control'"
-                  ></tag-input>
-                </div>
-              </div>
+              
               <div class="row">
                 <div class="col-md-12">
                   <button

@@ -101,7 +101,7 @@
                   <td>{{ agente.cpf }}</td>
                   <td>{{ agente.telefone }}</td>
                   <td>
-                    <a [routerLink]="['editar/', agente.id]" name="editar">
+                    <a [routerLink]="['/admin/agentes/editar/', agente.id]" name="editar">
                       <button class="btn btn-primary btn-fill" name="editar" aria-label="editar">
                         <i class="pe-7s-pen"></i></button></a>
                     <a (click)="abrirModal(agente.id)" name="apagar" *ngIf="inativo">
